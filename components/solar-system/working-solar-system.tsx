@@ -142,7 +142,7 @@ function Moon({ earthPosition, onClick }: { earthPosition: THREE.Vector3; onClic
     
     if (!globalAnimationState.isPaused) {
       setTime(prev => prev + delta * globalAnimationState.speed * 2)
-      const moonDistance = 3
+      const moonDistance = 2
       meshRef.current.position.x = earthPosition.x + Math.cos(time) * moonDistance
       meshRef.current.position.z = earthPosition.z + Math.sin(time) * moonDistance
       meshRef.current.rotation.y += delta * globalAnimationState.speed
@@ -152,7 +152,7 @@ function Moon({ earthPosition, onClick }: { earthPosition: THREE.Vector3; onClic
   return (
     <mesh 
       ref={meshRef} 
-      scale={0.15}
+      scale={0.1}
       onClick={(e) => {
         e.stopPropagation()
         onClick()
@@ -212,11 +212,23 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
   }
   
   const getOrbitalRadius = (distance: number) => {
-    return Math.log(distance / 1000000) * 3 + 8
+    // Usar distâncias fixas para evitar sobreposição
+    const planetDistances: Record<string, number> = {
+      mercury: 12,
+      venus: 18,
+      earth: 24,
+      mars: 30,
+      jupiter: 40,
+      saturn: 50,
+      uranus: 60,
+      neptune: 70
+    }
+    return planetDistances[planets.find(p => p.distance_from_sun === distance)?.name.toLowerCase() || 'mercury'] || 12
   }
 
   const getPlanetScale = (radius: number) => {
-    return Math.max(0.3, Math.min(2, Math.log(radius / 1000) * 0.4 + 0.8))
+    // Escala mais conservadora para evitar planetas muito grandes
+    return Math.max(0.2, Math.min(1.2, Math.log(radius / 1000) * 0.3 + 0.5))
   }
 
   return (
@@ -252,8 +264,8 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
         enablePan={true}
         enableZoom={true}
         enableRotate={true}
-        minDistance={3}
-        maxDistance={200}
+        minDistance={10}
+        maxDistance={150}
       />
       
       <CameraController />
@@ -401,7 +413,10 @@ function getTextureUrl(planetName: string): string {
     venus: "/venus-texture.png", 
     earth: "/earth-planet-texture-blue-green.jpg",
     mars: "/mars-red-texture.png",
-    jupiter: "/jupiter-gas-giant-planet-texture-bands.jpg"
+    jupiter: "/jupiter-gas-giant-planet-texture-bands.jpg",
+    saturn: "/saturn-realistic.jpg",
+    uranus: "/uranus-realistic.jpg",
+    neptune: "/neptune-realistic.jpg"
   }
   return textureMap[planetName.toLowerCase()] || "/placeholder.jpg"
 }
@@ -424,7 +439,7 @@ export function WorkingSolarSystem({ planets, onPlanetSelect, selectedPlanet }: 
   return (
     <div className="w-full h-screen bg-gradient-to-b from-slate-900 to-black relative">
       <Canvas
-        camera={{ position: [0, 20, 40], fov: 60 }}
+        camera={{ position: [0, 30, 80], fov: 50 }}
         gl={{ antialias: true }}
       >
         <Suspense fallback={null}>

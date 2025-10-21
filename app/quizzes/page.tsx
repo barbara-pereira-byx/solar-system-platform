@@ -16,7 +16,7 @@ export default function QuizzesPage() {
   const [loading, setLoading] = useState(true)
   const [completedQuizzes, setCompletedQuizzes] = useState<number[]>([])
 
-  // Mock quiz data
+  // Mock quiz data (fallback)
   const mockQuizzes: Quiz[] = [
     {
       id: 1,
@@ -154,13 +154,54 @@ export default function QuizzesPage() {
   ]
 
   useEffect(() => {
-    // Simulate loading and get completed quizzes from localStorage
-    setTimeout(() => {
-      setQuizzes(mockQuizzes)
-      const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
-      setCompletedQuizzes(completed)
-      setLoading(false)
-    }, 1000)
+    const loadQuizzes = async () => {
+      try {
+        setLoading(true)
+        
+        // Try to fetch from API first
+        const response = await fetch('/api/quizzes')
+        if (response.ok) {
+          const apiQuizzes = await response.json()
+          // Transform API data to match the expected format
+          const transformedQuizzes: Quiz[] = apiQuizzes.map((quiz: any) => ({
+            id: quiz.id,
+            title: quiz.title,
+            description: quiz.description || '',
+            difficulty: 'medium' as const,
+            questions: quiz.questions.map((q: any) => ({
+              id: q.id,
+              question: q.question,
+              options: q.options || [],
+              correct_answer: 0, // This would need to be determined based on the correctAnswer field
+              explanation: q.explanation || '',
+            })),
+            estimated_time: quiz.questions.length * 30, // 30 seconds per question
+            total_questions: quiz.questions.length,
+            created_at: quiz.createdAt,
+            updated_at: quiz.updatedAt,
+          }))
+          setQuizzes(transformedQuizzes)
+          const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
+          setCompletedQuizzes(completed)
+          setLoading(false)
+          return
+        }
+        
+        // Fallback to mock data
+        setQuizzes(mockQuizzes)
+        const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
+        setCompletedQuizzes(completed)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error loading quizzes:', error)
+        setQuizzes(mockQuizzes)
+        const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
+        setCompletedQuizzes(completed)
+        setLoading(false)
+      }
+    }
+    
+    loadQuizzes()
   }, [])
 
   const getDifficultyColor = (difficulty: string) => {

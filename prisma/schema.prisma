@@ -1,0 +1,161 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// Modelo para professores/administradores
+model Teacher {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("teacher") // teacher, admin
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("teachers")
+}
+
+// Modelo para planetas
+model Planet {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  displayName String
+  description String?
+  mass        Float?   // em kg
+  radius      Float?   // em km
+  gravity     Float?   // em m/s²
+  temperature Float?   // em Kelvin
+  distance    Float?   // distância do sol em km
+  orbitalPeriod Float? // período orbital em dias
+  rotationPeriod Float? // período de rotação em horas
+  moons       Int      @default(0)
+  texture     String?  // URL da textura
+  isActive    Boolean  @default(true)
+  order       Int      @default(0) // ordem de exibição
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  comparisonValues PlanetComparisonValue[]
+  quizQuestions QuizQuestion[]
+  moonsList   Moon[] // Lista de luas do planeta
+
+  @@map("planets")
+}
+
+// Modelo para luas
+model Moon {
+  id          String   @id @default(cuid())
+  name        String
+  planetId    String
+  description String?
+  mass        Float?
+  radius      Float?
+  distance    Float?   // distância do planeta em km
+  orbitalPeriod Float?
+  texture     String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  planet      Planet   @relation(fields: [planetId], references: [id], onDelete: Cascade)
+
+  @@map("moons")
+}
+
+// Modelo para campos de comparação
+model ComparisonField {
+  id          String   @id @default(cuid())
+  name        String
+  displayName String
+  type        String   // "number", "text", "boolean", "image"
+  unit        String?  // unidade de medida
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  planetValues PlanetComparisonValue[]
+
+  @@map("comparison_fields")
+}
+
+// Modelo para valores de comparação dos planetas
+model PlanetComparisonValue {
+  id        String   @id @default(cuid())
+  planetId  String
+  fieldId   String
+  value     String   // valor como string para flexibilidade
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  planet    Planet         @relation(fields: [planetId], references: [id], onDelete: Cascade)
+  field     ComparisonField @relation(fields: [fieldId], references: [id], onDelete: Cascade)
+
+  @@unique([planetId, fieldId])
+  @@map("planet_comparison_values")
+}
+
+// Modelo para quizzes
+model Quiz {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  questions   QuizQuestion[]
+
+  @@map("quizzes")
+}
+
+// Modelo para perguntas do quiz
+model QuizQuestion {
+  id          String   @id @default(cuid())
+  quizId      String
+  planetId    String?  // pergunta relacionada a um planeta específico
+  question    String
+  type        String   @default("multiple_choice") // multiple_choice, true_false, text
+  options     Json?    // array de opções para múltipla escolha
+  correctAnswer String
+  explanation String?
+  points      Int      @default(1)
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  planet      Planet?  @relation(fields: [planetId], references: [id], onDelete: SetNull)
+
+  @@map("quiz_questions")
+}
+
+// Modelo para configurações gerais do sistema
+model SystemConfig {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String
+  description String?
+  type        String   @default("string") // string, number, boolean, json
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("system_configs")
+}

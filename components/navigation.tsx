@@ -13,7 +13,6 @@ const navigation = [
   { name: "Explorar", href: "/explorar", icon: Globe },
   { name: "Comparar", href: "/comparar", icon: BarChart3 },
   { name: "Quizzes", href: "/quizzes", icon: BookOpen },
-  { name: "Professores", href: "/professores", icon: Users },
 ]
 
 export function Navigation() {
