@@ -36,7 +36,7 @@ export interface Moon {
 }
 
 export interface Quiz {
-  id: number
+  id: string | number
   title: string
   description: string
   difficulty: "easy" | "medium" | "hard"
@@ -54,7 +54,7 @@ export interface QuizQuestion {
 
 export interface QuizResult {
   id: number
-  quiz: number
+  quiz: string | number
   user_name: string
   score: number
   total_questions: number
@@ -65,6 +65,7 @@ export interface QuizResult {
 export interface QuizAnswer {
   question_id: number
   selected_answer: number
+  text_answer?: string
   is_correct: boolean
 }
 

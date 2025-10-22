@@ -64,7 +64,7 @@ export async function PUT(
         planetId: planetId || null,
         question,
         type: type || 'multiple_choice',
-        options: options ? JSON.parse(options) : null,
+        options: Array.isArray(options) ? options.filter(opt => opt.trim()) : (options ? options.split('\n').filter(opt => opt.trim()) : null),
         correctAnswer,
         explanation,
         points: points ? parseInt(points) : 1,

@@ -74,13 +74,30 @@ export default function QuizQuestionsPage() {
     planetId: '',
     question: '',
     type: 'multiple_choice',
-    options: '',
     correctAnswer: '',
     explanation: '',
     points: '1',
     order: '0',
     isActive: true
   })
+  
+  const [options, setOptions] = useState<string[]>(['', ''])
+  
+  const addOption = () => {
+    setOptions([...options, ''])
+  }
+  
+  const removeOption = (index: number) => {
+    if (options.length > 2) {
+      setOptions(options.filter((_, i) => i !== index))
+    }
+  }
+  
+  const updateOption = (index: number, value: string) => {
+    const newOptions = [...options]
+    newOptions[index] = value
+    setOptions(newOptions)
+  }
 
   useEffect(() => {
     if (status === 'loading') return
@@ -159,7 +176,8 @@ export default function QuizQuestionsPage() {
         body: JSON.stringify({
           ...formData,
           quizId,
-          planetId: formData.planetId || null
+          planetId: formData.planetId === 'none' ? null : formData.planetId,
+          options: formData.type === 'multiple_choice' ? options.filter(opt => opt.trim()) : null
         }),
       })
 
@@ -181,16 +199,16 @@ export default function QuizQuestionsPage() {
   const handleEdit = (question: QuizQuestion) => {
     setEditingQuestion(question)
     setFormData({
-      planetId: question.planetId || '',
+      planetId: question.planetId || 'none',
       question: question.question,
       type: question.type,
-      options: question.options ? JSON.stringify(question.options) : '',
       correctAnswer: question.correctAnswer,
       explanation: question.explanation || '',
       points: question.points.toString(),
       order: question.order.toString(),
       isActive: question.isActive
     })
+    setOptions(Array.isArray(question.options) ? question.options : ['', ''])
     setIsDialogOpen(true)
   }
 
@@ -214,16 +232,16 @@ export default function QuizQuestionsPage() {
 
   const resetForm = () => {
     setFormData({
-      planetId: '',
+      planetId: 'none',
       question: '',
       type: 'multiple_choice',
-      options: '',
       correctAnswer: '',
       explanation: '',
       points: '1',
       order: '0',
       isActive: true
     })
+    setOptions(['', ''])
   }
 
   const openCreateDialog = () => {
@@ -261,7 +279,7 @@ export default function QuizQuestionsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-8">
         <div>
@@ -310,22 +328,6 @@ export default function QuizQuestionsPage() {
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <Label htmlFor="planetId">Planeta Relacionado (Opcional)</Label>
-                    <Select value={formData.planetId} onValueChange={(value) => setFormData({ ...formData, planetId: value })}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Selecione um planeta" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="">Nenhum</SelectItem>
-                        {planets.map((planet) => (
-                          <SelectItem key={planet.id} value={planet.id}>
-                            {planet.displayName}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
                     <Label htmlFor="type">Tipo de Pergunta</Label>
                     <Select value={formData.type} onValueChange={(value) => setFormData({ ...formData, type: value })}>
                       <SelectTrigger>
@@ -354,14 +356,39 @@ export default function QuizQuestionsPage() {
 
                 {formData.type === 'multiple_choice' && (
                   <div className="space-y-2">
-                    <Label htmlFor="options">Opções (uma por linha)</Label>
-                    <Textarea
-                      id="options"
-                      value={formData.options}
-                      onChange={(e) => setFormData({ ...formData, options: e.target.value })}
-                      placeholder="Opção A&#10;Opção B&#10;Opção C&#10;Opção D"
-                      rows={4}
-                    />
+                    <Label>Alternativas</Label>
+                    <div className="space-y-2">
+                      {options.map((option, index) => (
+                        <div key={index} className="flex gap-2">
+                          <Input
+                            value={option}
+                            onChange={(e) => updateOption(index, e.target.value)}
+                            placeholder={`Alternativa ${String.fromCharCode(65 + index)}`}
+                            className="flex-1"
+                          />
+                          {options.length > 2 && (
+                            <Button
+                              type="button"
+                              variant="outline"
+                              size="sm"
+                              onClick={() => removeOption(index)}
+                            >
+                              <X className="h-4 w-4" />
+                            </Button>
+                          )}
+                        </div>
+                      ))}
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        onClick={addOption}
+                        className="w-full"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Adicionar Alternativa
+                      </Button>
+                    </div>
                   </div>
                 )}
 
@@ -521,13 +548,16 @@ export default function QuizQuestionsPage() {
                   </div>
                 )}
 
-                {question.options && (
+                {question.options && Array.isArray(question.options) && question.options.length > 0 && (
                   <div>
-                    <span className="text-muted-foreground">Opções:</span>
+                    <span className="text-muted-foreground">Alternativas:</span>
                     <div className="mt-1 space-y-1">
-                      {Array.isArray(question.options) && question.options.map((option: string, idx: number) => (
-                        <div key={idx} className="text-sm bg-gray-50 p-2 rounded">
-                          {option}
+                      {question.options.map((option: string, idx: number) => (
+                        <div key={idx} className="text-sm bg-muted/50 p-3 rounded-md border flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-xs font-medium">
+                            {String.fromCharCode(65 + idx)}
+                          </div>
+                          <span>{option}</span>
                         </div>
                       ))}
                     </div>

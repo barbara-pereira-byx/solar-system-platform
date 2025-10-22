@@ -191,7 +191,7 @@ export default function QuizzesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-8">
         <div>

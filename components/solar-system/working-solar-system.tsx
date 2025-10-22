@@ -4,7 +4,8 @@ import { Suspense, useRef, useState, useEffect } from "react"
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber"
 import { OrbitControls, Stars } from "@react-three/drei"
 import * as THREE from "three"
-import type { Planet } from "@/lib/api"
+import type { Planet, Moon } from "@/lib/planets-data"
+import { getMoonsByPlanet } from "@/lib/planets-data"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -12,8 +13,8 @@ import { X, Play, Pause } from "lucide-react"
 
 interface SolarSystemProps {
   planets: Planet[]
-  onPlanetSelect?: (planet: Planet | null) => void
-  selectedPlanet?: Planet | null
+  onPlanetSelect?: (planet: Planet | Moon | null) => void
+  selectedPlanet?: Planet | Moon | null
 }
 
 // Global animation state
@@ -40,11 +41,6 @@ function PlanetMesh({
   const meshRef = useRef<THREE.Mesh>(null!)
   const groupRef = useRef<THREE.Group>(null!)
   const [time, setTime] = useState(Math.random() * Math.PI * 2)
-  
-  // Load texture
-  const texture = useLoader(THREE.TextureLoader, getTextureUrl(planet.name), undefined, () => {
-    console.log(`Failed to load texture for ${planet.name}`)
-  })
 
   useFrame((state, delta) => {
     if (!groupRef.current || !meshRef.current) return
@@ -57,7 +53,7 @@ function PlanetMesh({
       groupRef.current.position.x = Math.cos(time) * orbitalRadius
       groupRef.current.position.z = Math.sin(time) * orbitalRadius
       
-      // Update Earth position for Moon
+      // Update planet position for moons
       if (onPositionUpdate) {
         onPositionUpdate(groupRef.current.position)
       }
@@ -85,8 +81,9 @@ function PlanetMesh({
       >
         <sphereGeometry args={[1, 32, 32]} />
         <meshStandardMaterial 
-          map={texture} 
-          color={texture ? "#ffffff" : getPlanetColor(planet.name)}
+          color={planet.color}
+          roughness={0.8}
+          metalness={0.2}
         />
       </mesh>
     </group>
@@ -133,18 +130,34 @@ function OrbitRing({ radius }: { radius: number }) {
   )
 }
 
-function Moon({ earthPosition, onClick }: { earthPosition: THREE.Vector3; onClick: () => void }) {
+function MoonMesh({ 
+  moon, 
+  planetPosition, 
+  orbitalRadius, 
+  scale, 
+  speed, 
+  moonOffset = 0,
+  onClick 
+}: { 
+  moon: Moon
+  planetPosition: THREE.Vector3
+  orbitalRadius: number
+  scale: number
+  speed: number
+  moonOffset?: number
+  onClick: () => void
+}) {
   const meshRef = useRef<THREE.Mesh>(null!)
-  const [time, setTime] = useState(0)
+  const [time, setTime] = useState(Math.random() * Math.PI * 2)
 
   useFrame((state, delta) => {
     if (!meshRef.current) return
     
     if (!globalAnimationState.isPaused) {
-      setTime(prev => prev + delta * globalAnimationState.speed * 2)
-      const moonDistance = 2
-      meshRef.current.position.x = earthPosition.x + Math.cos(time) * moonDistance
-      meshRef.current.position.z = earthPosition.z + Math.sin(time) * moonDistance
+      setTime(prev => prev + delta * globalAnimationState.speed * speed)
+      const angle = time + moonOffset
+      meshRef.current.position.x = planetPosition.x + Math.cos(angle) * orbitalRadius
+      meshRef.current.position.z = planetPosition.z + Math.sin(angle) * orbitalRadius
       meshRef.current.rotation.y += delta * globalAnimationState.speed
     }
   })
@@ -152,7 +165,7 @@ function Moon({ earthPosition, onClick }: { earthPosition: THREE.Vector3; onClic
   return (
     <mesh 
       ref={meshRef} 
-      scale={0.1}
+      scale={scale}
       onClick={(e) => {
         e.stopPropagation()
         onClick()
@@ -165,7 +178,11 @@ function Moon({ earthPosition, onClick }: { earthPosition: THREE.Vector3; onClic
       }}
     >
       <sphereGeometry args={[1, 16, 16]} />
-      <meshStandardMaterial color="#C0C0C0" />
+      <meshStandardMaterial 
+        color={moon.color}
+        roughness={0.9}
+        metalness={0.1}
+      />
     </mesh>
   )
 }
@@ -189,27 +206,7 @@ function CameraController() {
 }
 
 function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
-  const [earthPosition, setEarthPosition] = useState(new THREE.Vector3())
-  
-  const moonData = {
-    id: 999,
-    name: "moon",
-    portuguese_name: "Lua",
-    radius: 1737,
-    mass: 7.342e22,
-    gravity: 1.62,
-    average_temperature: -20,
-    distance_from_sun: 149600000,
-    orbital_period: 27.3,
-    rotation_period: 655.7,
-    description: "O único satélite natural da Terra, responsável pelas marés e estabilização do eixo terrestre.",
-    curiosities: ["Sempre mostra a mesma face para a Terra", "Está se afastando da Terra 3,8 cm por ano", "Tem água congelada nos polos"],
-    image_url: "/placeholder.jpg",
-    color: "#C0C0C0",
-    moons_count: 0,
-    created_at: "2024-01-01",
-    updated_at: "2024-01-01",
-  }
+  const [planetPositions, setPlanetPositions] = useState<Record<string, THREE.Vector3>>({})
   
   const getOrbitalRadius = (distance: number) => {
     // Usar distâncias fixas para evitar sobreposição
@@ -231,6 +228,16 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
     return Math.max(0.2, Math.min(1.2, Math.log(radius / 1000) * 0.3 + 0.5))
   }
 
+  const getMoonScale = (radius: number) => {
+    // Escala para luas baseada no raio
+    return Math.max(0.02, Math.min(0.3, Math.log(radius / 100) * 0.1 + 0.05))
+  }
+
+  const getMoonOrbitalRadius = (distance: number, planetScale: number) => {
+    // Distância orbital da lua baseada na distância real e escala do planeta
+    return Math.max(1.5, Math.min(8, (distance / 100000) * 0.1 + planetScale * 2))
+  }
+
   return (
     <>
       <ambientLight intensity={0.4} />
@@ -241,6 +248,7 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
       {planets.map((planet, index) => {
         const orbitalRadius = getOrbitalRadius(planet.distance_from_sun)
         const planetScale = getPlanetScale(planet.radius)
+        const planetMoons = getMoonsByPlanet(planet.name)
         
         return (
           <group key={planet.id}>
@@ -251,14 +259,46 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
               scale={planetScale}
               speed={0.3 / (index + 1)}
               onClick={() => onPlanetSelect?.(planet)}
-              onPositionUpdate={planet.name === 'earth' ? setEarthPosition : undefined}
+              onPositionUpdate={(position) => {
+                setPlanetPositions(prev => ({
+                  ...prev,
+                  [planet.name]: position
+                }))
+              }}
             />
+            
+            {/* Luas do planeta */}
+            {planetMoons.map((moon, moonIndex) => {
+              const moonScale = getMoonScale(moon.radius)
+              const moonOrbitalRadius = getMoonOrbitalRadius(moon.distance_from_planet, planetScale)
+              const moonSpeed = 2 + moonIndex * 0.5 // Velocidade orbital da lua
+              
+              // Para Saturno, criar um arco de luas
+              let moonOffset = 0
+              if (planet.name === 'saturn') {
+                // Distribuir as luas em um arco de 120 graus
+                const totalMoons = planetMoons.length
+                const arcAngle = Math.PI * 2 / 3 // 120 graus
+                const angleStep = arcAngle / (totalMoons - 1)
+                moonOffset = (moonIndex * angleStep) - (arcAngle / 2)
+              }
+              
+              return (
+                <MoonMesh
+                  key={moon.id}
+                  moon={moon}
+                  planetPosition={planetPositions[planet.name] || new THREE.Vector3()}
+                  orbitalRadius={moonOrbitalRadius}
+                  scale={moonScale}
+                  speed={moonSpeed}
+                  moonOffset={moonOffset}
+                  onClick={() => onPlanetSelect?.(moon)}
+                />
+              )
+            })}
           </group>
         )
       })}
-      
-      {/* Lua ao redor da Terra */}
-      <Moon earthPosition={earthPosition} onClick={() => onPlanetSelect?.(moonData)} />
       
       <OrbitControls
         enablePan={true}
@@ -323,7 +363,7 @@ function SimulationControls() {
   )
 }
 
-function PlanetModal({ planet, onClose }: { planet: Planet; onClose: () => void }) {
+function PlanetModal({ planet, onClose }: { planet: Planet | Moon; onClose: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-4xl h-[85vh] flex flex-col">
@@ -350,7 +390,7 @@ function PlanetModal({ planet, onClose }: { planet: Planet; onClose: () => void 
             <div className="space-y-4">
               <div className="w-full h-64 rounded-lg overflow-hidden bg-slate-900">
                 <img 
-                  src={planet.image_url || getTextureUrl(planet.name)} 
+                  src={planet.image_url || "/placeholder.jpg"} 
                   alt={planet.portuguese_name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
@@ -371,11 +411,44 @@ function PlanetModal({ planet, onClose }: { planet: Planet; onClose: () => void 
                 <InfoItem label="Massa" value={`${(planet.mass / 1e24).toFixed(2)} × 10²⁴ kg`} />
                 <InfoItem label="Gravidade" value={`${planet.gravity} m/s²`} />
                 <InfoItem label="Temperatura" value={`${planet.average_temperature}°C`} />
-                <InfoItem label="Distância do Sol" value={`${(planet.distance_from_sun / 1000000).toFixed(1)} milhões km`} />
+                {'distance_from_sun' in planet ? (
+                  <InfoItem label="Distância do Sol" value={`${(planet.distance_from_sun / 1000000).toFixed(1)} milhões km`} />
+                ) : (
+                  <InfoItem label="Distância do Planeta" value={`${(planet.distance_from_planet / 1000).toFixed(1)} mil km`} />
+                )}
                 <InfoItem label="Período Orbital" value={`${planet.orbital_period} dias`} />
                 <InfoItem label="Rotação" value={`${Math.abs(planet.rotation_period)} horas`} />
-                <InfoItem label="Luas" value={planet.moons_count.toString()} />
+                {'moons_count' in planet && (
+                  <InfoItem label="Luas" value={planet.moons_count.toString()} />
+                )}
+                {'parent_planet' in planet && (
+                  <InfoItem label="Planeta Pai" value={planet.parent_planet} />
+                )}
               </div>
+              
+              {/* Informações adicionais para planetas */}
+              {'composition' in planet && 'rings' in planet && (
+                <div className="grid grid-cols-2 gap-3">
+                  <InfoItem label="Composição" value={planet.composition} />
+                  <InfoItem label="Atmosfera" value={planet.atmosphere} />
+                  <InfoItem label="Campo Magnético" value={planet.magnetic_field ? "Sim" : "Não"} />
+                  <InfoItem label="Anéis" value={planet.rings ? "Sim" : "Não"} />
+                  <InfoItem label="Inclinação Axial" value={`${planet.axial_tilt}°`} />
+                  <InfoItem label="Velocidade de Escape" value={`${planet.escape_velocity} km/s`} />
+                  <InfoItem label="Albedo" value={planet.albedo.toFixed(3)} />
+                </div>
+              )}
+              
+              {/* Informações adicionais para luas */}
+              {'composition' in planet && 'parent_planet' in planet && (
+                <div className="grid grid-cols-2 gap-3">
+                  <InfoItem label="Composição" value={planet.composition} />
+                  <InfoItem label="Atmosfera" value={planet.atmosphere} />
+                  <InfoItem label="Campo Magnético" value={planet.magnetic_field ? "Sim" : "Não"} />
+                  <InfoItem label="Inclinação Axial" value={`${planet.axial_tilt}°`} />
+                  <InfoItem label="Albedo" value={planet.albedo.toFixed(3)} />
+                </div>
+              )}
               
               {planet.curiosities && planet.curiosities.length > 0 && (
                 <div>
@@ -407,33 +480,6 @@ function InfoItem({ label, value }: { label: string; value: string }) {
   )
 }
 
-function getTextureUrl(planetName: string): string {
-  const textureMap: Record<string, string> = {
-    mercury: "/mercury-texture.png",
-    venus: "/venus-texture.png", 
-    earth: "/earth-planet-texture-blue-green.jpg",
-    mars: "/mars-red-texture.png",
-    jupiter: "/jupiter-gas-giant-planet-texture-bands.jpg",
-    saturn: "/saturn-realistic.jpg",
-    uranus: "/uranus-realistic.jpg",
-    neptune: "/neptune-realistic.jpg"
-  }
-  return textureMap[planetName.toLowerCase()] || "/placeholder.jpg"
-}
-
-function getPlanetColor(planetName: string): string {
-  const colorMap: Record<string, string> = {
-    mercury: "#8C7853",
-    venus: "#FFC649",
-    earth: "#6B93D6", 
-    mars: "#CD5C5C",
-    jupiter: "#D8CA9D",
-    saturn: "#FAD5A5",
-    uranus: "#4FD0E7",
-    neptune: "#4B70DD"
-  }
-  return colorMap[planetName.toLowerCase()] || "#888888"
-}
 
 export function WorkingSolarSystem({ planets, onPlanetSelect, selectedPlanet }: SolarSystemProps) {
   return (

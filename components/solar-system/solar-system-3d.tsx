@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import dynamic from "next/dynamic"
-import type { Planet } from "@/lib/api"
+import type { Planet, Moon } from "@/lib/planets-data"
 
 // Load the working solar system
 const WorkingSolarSystem = dynamic(
@@ -19,8 +19,8 @@ const WorkingSolarSystem = dynamic(
 
 interface SolarSystem3DProps {
   planets: Planet[]
-  onPlanetSelect?: (planet: Planet | null) => void
-  selectedPlanet?: Planet | null
+  onPlanetSelect?: (planet: Planet | Moon | null) => void
+  selectedPlanet?: Planet | Moon | null
 }
 
 export function SolarSystem3D({ planets, onPlanetSelect, selectedPlanet }: SolarSystem3DProps) {

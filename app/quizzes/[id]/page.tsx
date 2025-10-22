@@ -9,7 +9,10 @@ import { LoadingSpinner } from "@/components/loading-spinner"
 import type { Quiz, QuizResult, QuizAnswer } from "@/lib/api"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, AlertTriangle } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ArrowLeft, AlertTriangle, User, Play } from "lucide-react"
 
 export default function QuizPage() {
   const params = useParams()
@@ -17,8 +20,10 @@ export default function QuizPage() {
   const [quiz, setQuiz] = useState<Quiz | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [quizState, setQuizState] = useState<"taking" | "completed">("taking")
+  const [quizState, setQuizState] = useState<"name" | "taking" | "completed">("name")
   const [result, setResult] = useState<QuizResult | null>(null)
+  const [userName, setUserName] = useState('')
+  const [nameError, setNameError] = useState('')
 
   // Mock quiz data (same as in quizzes page)
   const mockQuizzes: Quiz[] = [
@@ -163,13 +168,58 @@ export default function QuizPage() {
         setLoading(true)
         setError(null)
 
-        const quizId = Number.parseInt(params.id as string)
-        if (isNaN(quizId)) {
+        const quizId = params.id as string
+        if (!quizId) {
           setError("ID do quiz inválido")
           return
         }
 
-        const foundQuiz = mockQuizzes.find((q) => q.id === quizId)
+        // Try to fetch from API first
+        try {
+          const response = await fetch(`/api/quizzes/${quizId}`)
+          if (response.ok) {
+            const apiQuiz = await response.json()
+            // Transform API data to match the expected format
+            const transformedQuiz: Quiz = {
+              id: apiQuiz.id,
+              title: apiQuiz.title,
+              description: apiQuiz.description || '',
+              difficulty: 'medium' as const,
+              questions: apiQuiz.questions.map((q: any, index: number) => {
+                let options = []
+                let correctAnswerIndex = 0
+                
+                if (q.type === 'true_false') {
+                  options = ['Verdadeiro', 'Falso']
+                  correctAnswerIndex = q.correctAnswer === 'true' ? 0 : 1
+                } else if (Array.isArray(q.options)) {
+                  options = q.options
+                  if (options.length > 0 && q.correctAnswer) {
+                    const foundIndex = options.findIndex(opt => opt === q.correctAnswer)
+                    correctAnswerIndex = foundIndex >= 0 ? foundIndex : 0
+                  }
+                }
+                
+                return {
+                  id: q.id,
+                  question: q.question,
+                  options,
+                  correct_answer: correctAnswerIndex,
+                  explanation: q.explanation || '',
+                }
+              }),
+              created_at: apiQuiz.createdAt,
+            }
+            setQuiz(transformedQuiz)
+            return
+          }
+        } catch (apiError) {
+          console.log('API fetch failed, trying mock data:', apiError)
+        }
+
+        // Fallback to mock data with numeric ID
+        const numericId = Number.parseInt(quizId)
+        const foundQuiz = mockQuizzes.find((q) => q.id === numericId)
         if (!foundQuiz) {
           setError("Quiz não encontrado")
           return
@@ -196,7 +246,7 @@ export default function QuizPage() {
     const quizResult: QuizResult = {
       id: Date.now(),
       quiz: quiz.id,
-      user_name: "Usuário",
+      user_name: userName || "Usuário Anônimo",
       score: Math.round(score),
       total_questions: quiz.questions.length,
       completed_at: new Date().toISOString(),
@@ -213,15 +263,53 @@ export default function QuizPage() {
       localStorage.setItem("completedQuizzes", JSON.stringify(completedQuizzes))
     }
 
-    // Save quiz result
+    // Save quiz result with detailed answers
     const quizResults = JSON.parse(localStorage.getItem("quizResults") || "[]")
     quizResults.push(quizResult)
     localStorage.setItem("quizResults", JSON.stringify(quizResults))
+    
+    // Save to ranking
+    const ranking = JSON.parse(localStorage.getItem("quizRanking") || "[]")
+    ranking.push({
+      name: userName || "Usuário Anônimo",
+      quiz: quiz.title,
+      score: Math.round(score),
+      date: new Date().toISOString(),
+      quiz_id: quiz.id
+    })
+    // Sort by score descending
+    ranking.sort((a, b) => b.score - a.score)
+    localStorage.setItem("quizRanking", JSON.stringify(ranking))
   }
 
   const handleRetakeQuiz = () => {
-    setQuizState("taking")
+    setQuizState("name")
     setResult(null)
+    setUserName('')
+  }
+  
+  const checkNameExists = (name: string) => {
+    const ranking = JSON.parse(localStorage.getItem("quizRanking") || "[]")
+    return ranking.some((entry: any) => 
+      entry.name.toLowerCase() === name.toLowerCase() && 
+      entry.quiz_id === quiz?.id
+    )
+  }
+
+  const handleStartQuiz = () => {
+    const trimmedName = userName.trim()
+    if (!trimmedName) {
+      setNameError('Por favor, digite seu nome')
+      return
+    }
+    
+    if (checkNameExists(trimmedName)) {
+      setNameError('Este nome já foi usado neste quiz. Escolha outro nome.')
+      return
+    }
+    
+    setNameError('')
+    setQuizState("taking")
   }
 
   if (loading) {
@@ -257,9 +345,64 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <Navigation />
-      {quizState === "taking" ? (
+      {quizState === "name" ? (
+        <div className="container mx-auto px-4 py-8 max-w-md">
+          <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Voltar
+          </Button>
+          <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm">
+            <CardHeader className="text-center">
+              <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <User className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-2xl">{quiz.title}</CardTitle>
+              <p className="text-muted-foreground">{quiz.description}</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="userName" className="text-base font-medium">
+                  Qual é o seu nome?
+                </Label>
+                <Input
+                  id="userName"
+                  value={userName}
+                  onChange={(e) => {
+                    setUserName(e.target.value)
+                    if (nameError) setNameError('')
+                  }}
+                  placeholder="Digite seu nome..."
+                  className={`text-base p-3 ${nameError ? 'border-red-500' : ''}`}
+                  onKeyPress={(e) => e.key === 'Enter' && handleStartQuiz()}
+                />
+                {nameError && (
+                  <p className="text-sm text-red-500 mt-1">{nameError}</p>
+                )}
+              </div>
+              <div className="bg-muted/30 p-4 rounded-lg space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span>Perguntas:</span>
+                  <span className="font-medium">{quiz.questions.length}</span>
+                </div>
+                <div className="flex justify-between text-sm">
+                  <span>Tempo estimado:</span>
+                  <span className="font-medium">{Math.ceil(quiz.questions.length * 1.5)} min</span>
+                </div>
+              </div>
+              <Button 
+                onClick={handleStartQuiz} 
+                disabled={!userName.trim()}
+                className="w-full py-3 text-base"
+              >
+                <Play className="h-4 w-4 mr-2" />
+                Iniciar Quiz
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
+      ) : quizState === "taking" ? (
         <QuizInterface quiz={quiz} onComplete={handleQuizComplete} />
       ) : (
         <QuizResults quiz={quiz} result={result!} onRetake={handleRetakeQuiz} />
