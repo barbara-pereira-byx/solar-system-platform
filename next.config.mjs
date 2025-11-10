@@ -9,8 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client'],
+  },
   webpack: (config, { isServer }) => {
-    // Ignore three-mesh-bvh build errors
     config.resolve.alias = {
       ...config.resolve.alias,
     }

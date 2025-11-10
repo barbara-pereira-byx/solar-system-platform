@@ -1,27 +1,9 @@
 import { NextResponse } from 'next/server'
-import { prisma } from '@/lib/prisma'
+import { getAllQuizzes } from '@/lib/quizzes-data'
 
 export async function GET() {
   try {
-    const quizzes = await prisma.quiz.findMany({
-      where: {
-        isActive: true
-      },
-      include: {
-        questions: {
-          where: {
-            isActive: true
-          },
-          orderBy: {
-            order: 'asc'
-          }
-        }
-      },
-      orderBy: {
-        order: 'asc'
-      }
-    })
-
+    const quizzes = getAllQuizzes()
     return NextResponse.json(quizzes)
   } catch (error) {
     console.error('Error fetching quizzes:', error)
