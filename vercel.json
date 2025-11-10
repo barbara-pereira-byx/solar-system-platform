@@ -1,6 +1,4 @@
 {
-  "buildCommand": "next build",
-  "installCommand": "npm install",
   "env": {
     "SKIP_ENV_VALIDATION": "true"
   }
