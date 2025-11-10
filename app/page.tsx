@@ -112,18 +112,6 @@ export default function HomePage() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
               <CardHeader>
-                <div className="h-12 w-12 rounded-lg bg-chart-5/10 flex items-center justify-center mb-4 group-hover:bg-chart-5/20 transition-colors">
-                  <Users className="h-6 w-6 text-chart-5" />
-                </div>
-                <CardTitle>Dashboard Professores</CardTitle>
-                <CardDescription>
-                  Relatórios de desempenho dos alunos e ferramentas para acompanhar o progresso educacional.
-                </CardDescription>
-              </CardHeader>
-            </Card>
-
-            <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20">
-              <CardHeader>
                 <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
                   <Telescope className="h-6 w-6 text-primary" />
                 </div>
@@ -152,12 +140,6 @@ export default function HomePage() {
                   <Link href="/explorar">
                     <Globe className="h-5 w-5 mr-2" />
                     Explorar Planetas
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="text-lg px-8 bg-transparent">
-                  <Link href="/professores">
-                    <Users className="h-5 w-5 mr-2" />
-                    Área do Professor
                   </Link>
                 </Button>
               </div>

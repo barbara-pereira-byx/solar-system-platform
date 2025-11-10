@@ -10,7 +10,8 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { FIXED_PLANETS, type Planet } from "@/lib/planets-data"
 import { FIXED_COMPARISON_FIELDS, getPlanetComparisonValue, formatComparisonValue, calculateWeightOnPlanet, type ComparisonField } from "@/lib/comparison-data"
-import { BarChart3, X, Calculator, Scale, Thermometer, Globe, Clock } from "lucide-react"
+import { GravitySimulation } from "@/components/gravity-simulation"
+import { BarChart3, X, Calculator, Scale, Thermometer, Globe, Clock, Apple, Play, RotateCcw } from "lucide-react"
 
 // Componente para exibir imagem do planeta
 function PlanetImage({ planet, size = 48 }: { planet: Planet; size?: number }) {
@@ -65,7 +66,13 @@ export default function CompararPage() {
   const planets = FIXED_PLANETS
 
   const addPlanet = (planet: Planet) => {
-    if (selectedPlanets.length < 3 && !selectedPlanets.find((p) => p.id === planet.id)) {
+    const isAlreadySelected = selectedPlanets.find((p) => p.id === planet.id)
+    
+    if (isAlreadySelected) {
+      // Remove o planeta se já estiver selecionado
+      setSelectedPlanets(selectedPlanets.filter((p) => p.id !== planet.id))
+    } else if (selectedPlanets.length < 3) {
+      // Adiciona o planeta se não estiver selecionado e há espaço
       setSelectedPlanets([...selectedPlanets, planet])
     }
   }
@@ -232,8 +239,12 @@ export default function CompararPage() {
 
         {/* Comparison Results */}
         {selectedPlanets.length >= 2 && (
-          <Tabs defaultValue="weight" className="space-y-6">
-            <TabsList className="grid w-full grid-cols-4">
+          <Tabs defaultValue="gravity" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-5">
+              <TabsTrigger value="gravity">
+                <Apple className="h-4 w-4 mr-2" />
+                Gravidade
+              </TabsTrigger>
               <TabsTrigger value="weight">
                 <Scale className="h-4 w-4 mr-2" />
                 Peso
@@ -251,6 +262,10 @@ export default function CompararPage() {
                 Ambiente
               </TabsTrigger>
             </TabsList>
+
+            <TabsContent value="gravity">
+              <GravitySimulation planets={selectedPlanets} />
+            </TabsContent>
 
             <TabsContent value="weight">
               <Card>
