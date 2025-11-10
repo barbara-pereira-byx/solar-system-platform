@@ -1,13 +1,5 @@
 {
-  "functions": {
-    "app/api/**/*.ts": {
-      "runtime": "nodejs18.x"
-    }
-  },
   "env": {
-    "SKIP_ENV_VALIDATION": "true",
-    "NEXTAUTH_SECRET": "fallback-secret-for-build",
-    "NEXTAUTH_URL": "https://your-app.vercel.app",
-    "NEXT_PUBLIC_APP_URL": "https://your-app.vercel.app"
+    "SKIP_ENV_VALIDATION": "true"
   }
 }
