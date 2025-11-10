@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
+import { Textarea } from "@/components/ui/textarea"
 import type { Quiz, QuizAnswer } from "@/lib/api"
 import { Clock, CheckCircle, XCircle, ArrowRight, ArrowLeft } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -18,6 +19,7 @@ export function QuizInterface({ quiz, onComplete }: QuizInterfaceProps) {
   const router = useRouter()
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>(new Array(quiz.questions.length).fill(-1))
+  const [textAnswers, setTextAnswers] = useState<string[]>(new Array(quiz.questions.length).fill(''))
   const [timeElapsed, setTimeElapsed] = useState(0)
   const [showFeedback, setShowFeedback] = useState(false)
 
@@ -60,11 +62,15 @@ export function QuizInterface({ quiz, onComplete }: QuizInterfaceProps) {
   }
 
   const handleFinishQuiz = () => {
-    const answers: QuizAnswer[] = quiz.questions.map((question, index) => ({
-      question_id: question.id,
-      selected_answer: selectedAnswers[index],
-      is_correct: selectedAnswers[index] === question.correct_answer,
-    }))
+    const answers: QuizAnswer[] = quiz.questions.map((question, index) => {
+      const isTextQuestion = !question.options || question.options.length === 0
+      return {
+        question_id: question.id,
+        selected_answer: selectedAnswers[index],
+        text_answer: isTextQuestion ? textAnswers[index] : undefined,
+        is_correct: isTextQuestion ? true : selectedAnswers[index] === question.correct_answer,
+      }
+    })
 
     onComplete(answers)
   }
@@ -73,7 +79,11 @@ export function QuizInterface({ quiz, onComplete }: QuizInterfaceProps) {
   const selectedAnswer = selectedAnswers[currentQuestion]
   const isAnswered = selectedAnswer !== -1
   const isLastQuestion = currentQuestion === quiz.questions.length - 1
-  const allQuestionsAnswered = selectedAnswers.every((answer) => answer !== -1)
+  const allQuestionsAnswered = selectedAnswers.every((answer, index) => {
+    const question = quiz.questions[index]
+    const isTextQuestion = !question.options || question.options.length === 0
+    return isTextQuestion ? textAnswers[index]?.trim() : answer !== -1
+  })
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -102,48 +112,51 @@ export function QuizInterface({ quiz, onComplete }: QuizInterfaceProps) {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <Button variant="ghost" onClick={() => router.push("/quizzes")}>
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Voltar aos Quizzes
-          </Button>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <Clock className="h-4 w-4" />
-              {formatTime(timeElapsed)}
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-6">
+            <Button variant="ghost" onClick={() => router.push("/quizzes")} className="hover:bg-muted/50">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Voltar aos Quizzes
+            </Button>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground bg-muted/30 px-3 py-1.5 rounded-full">
+                <Clock className="h-4 w-4" />
+                {formatTime(timeElapsed)}
+              </div>
+              <Badge className={getDifficultyColor(quiz.difficulty)}>{getDifficultyLabel(quiz.difficulty)}</Badge>
             </div>
-            <Badge className={getDifficultyColor(quiz.difficulty)}>{getDifficultyLabel(quiz.difficulty)}</Badge>
+          </div>
+          <div className="text-center mb-6">
+            <h1 className="text-4xl font-bold mb-3 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">{quiz.title}</h1>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">{quiz.description}</p>
           </div>
         </div>
-        <h1 className="text-3xl font-bold mb-2">{quiz.title}</h1>
-        <p className="text-muted-foreground">{quiz.description}</p>
-      </div>
 
-      {/* Progress */}
-      <Card className="mb-8">
-        <CardContent className="p-4">
-          <div className="flex items-center justify-between mb-2">
-            <span className="text-sm font-medium">
-              Pergunta {currentQuestion + 1} de {quiz.questions.length}
-            </span>
-            <span className="text-sm text-muted-foreground">
-              {selectedAnswers.filter((a) => a !== -1).length} respondidas
-            </span>
-          </div>
-          <Progress value={((currentQuestion + 1) / quiz.questions.length) * 100} className="h-2" />
-        </CardContent>
-      </Card>
+        {/* Progress */}
+        <Card className="mb-8 border-0 shadow-lg bg-card/50 backdrop-blur-sm">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-base font-semibold">
+                Pergunta {currentQuestion + 1} de {quiz.questions.length}
+              </span>
+              <span className="text-sm text-muted-foreground bg-muted/30 px-3 py-1 rounded-full">
+                {selectedAnswers.filter((a) => a !== -1).length} respondidas
+              </span>
+            </div>
+            <Progress value={((currentQuestion + 1) / quiz.questions.length) * 100} className="h-3" />
+          </CardContent>
+        </Card>
 
-      {/* Question */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle className="text-xl">{currentQ.question}</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {currentQ.options.map((option, index) => {
+        {/* Question */}
+        <Card className="mb-8 border-0 shadow-xl bg-card/80 backdrop-blur-sm">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-2xl leading-relaxed">{currentQ.question}</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4 pt-2">
+          {currentQ.options && currentQ.options.length > 0 ? currentQ.options.map((option, index) => {
             let buttonVariant: "default" | "outline" | "secondary" = "outline"
             let buttonClass = ""
 
@@ -163,15 +176,15 @@ export function QuizInterface({ quiz, onComplete }: QuizInterfaceProps) {
               <Button
                 key={index}
                 variant={buttonVariant}
-                className={`w-full justify-start text-left h-auto p-4 ${buttonClass}`}
+                className={`w-full justify-start text-left h-auto p-5 transition-all duration-200 hover:scale-[1.02] ${buttonClass}`}
                 onClick={() => !showFeedback && handleAnswerSelect(index)}
                 disabled={showFeedback}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-6 h-6 rounded-full border-2 flex items-center justify-center text-sm font-medium">
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full border-2 flex items-center justify-center text-sm font-bold bg-background shadow-sm">
                     {String.fromCharCode(65 + index)}
                   </div>
-                  <span className="flex-1">{option}</span>
+                  <span className="flex-1 text-left text-base leading-relaxed">{option}</span>
                   {showFeedback && index === currentQ.correct_answer && (
                     <CheckCircle className="h-5 w-5 text-green-500" />
                   )}
@@ -181,82 +194,112 @@ export function QuizInterface({ quiz, onComplete }: QuizInterfaceProps) {
                 </div>
               </Button>
             )
-          })}
+          }) : (!currentQ.options || currentQ.options.length === 0) ? (
+            <div className="space-y-4">
+              <Textarea
+                value={textAnswers[currentQuestion] || ''}
+                onChange={(e) => {
+                  const newTextAnswers = [...textAnswers]
+                  newTextAnswers[currentQuestion] = e.target.value
+                  setTextAnswers(newTextAnswers)
+                  // Mark as answered if there's text
+                  const newAnswers = [...selectedAnswers]
+                  newAnswers[currentQuestion] = e.target.value.trim() ? 0 : -1
+                  setSelectedAnswers(newAnswers)
+                }}
+                placeholder="Digite sua resposta aqui..."
+                rows={4}
+                className="w-full p-4 text-base"
+                disabled={showFeedback}
+              />
+              {showFeedback && (
+                <div className="bg-muted/50 p-4 rounded-lg">
+                  <p className="text-sm text-muted-foreground mb-2">Sua resposta:</p>
+                  <p className="text-base">{textAnswers[currentQuestion] || 'Não respondido'}</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center text-muted-foreground py-4">
+              Nenhuma alternativa disponível para esta pergunta.
+            </div>
+          )}
         </CardContent>
       </Card>
 
-      {/* Feedback */}
-      {showFeedback && (
-        <Card className="mb-8">
+        {/* Feedback */}
+        {showFeedback && (
+          <Card className="mb-8 border-0 shadow-lg bg-card/80 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-3 text-xl">
+                {selectedAnswer === currentQ.correct_answer ? (
+                  <CheckCircle className="h-6 w-6 text-green-500" />
+                ) : (
+                  <XCircle className="h-6 w-6 text-red-500" />
+                )}
+                {selectedAnswer === currentQ.correct_answer ? "Correto!" : "Incorreto"}
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-muted-foreground text-base leading-relaxed">{currentQ.explanation}</p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between pt-4">
+          <Button variant="outline" onClick={handlePrevious} disabled={currentQuestion === 0} className="px-6 py-2">
+            <ArrowLeft className="h-4 w-4 mr-2" />
+            Anterior
+          </Button>
+
+          <div className="flex gap-3">
+            {isAnswered && !showFeedback && (
+              <Button variant="outline" onClick={handleShowFeedback} className="px-6 py-2">
+                Ver Explicação
+              </Button>
+            )}
+
+            {isLastQuestion ? (
+              <Button onClick={handleFinishQuiz} disabled={!allQuestionsAnswered} className="px-8 py-2 text-base">
+                Finalizar Quiz
+              </Button>
+            ) : (
+              <Button onClick={handleNext} disabled={!isAnswered} className="px-6 py-2">
+                Próxima
+                <ArrowRight className="h-4 w-4 ml-2" />
+              </Button>
+            )}
+          </div>
+        </div>
+
+        {/* Question Overview */}
+        <Card className="mt-8 border-0 shadow-lg bg-card/50 backdrop-blur-sm">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              {selectedAnswer === currentQ.correct_answer ? (
-                <CheckCircle className="h-5 w-5 text-green-500" />
-              ) : (
-                <XCircle className="h-5 w-5 text-red-500" />
-              )}
-              {selectedAnswer === currentQ.correct_answer ? "Correto!" : "Incorreto"}
-            </CardTitle>
+            <CardTitle className="text-lg">Visão Geral das Perguntas</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-muted-foreground">{currentQ.explanation}</p>
+            <div className="grid grid-cols-5 md:grid-cols-10 gap-3">
+              {quiz.questions.map((_, index) => (
+                <Button
+                  key={index}
+                  variant={
+                    index === currentQuestion ? "default" : selectedAnswers[index] !== -1 ? "secondary" : "outline"
+                  }
+                  size="sm"
+                  className="aspect-square p-0 text-sm font-semibold transition-all duration-200 hover:scale-110"
+                  onClick={() => {
+                    setCurrentQuestion(index)
+                    setShowFeedback(false)
+                  }}
+                >
+                  {index + 1}
+                </Button>
+              ))}
+            </div>
           </CardContent>
         </Card>
-      )}
-
-      {/* Navigation */}
-      <div className="flex items-center justify-between">
-        <Button variant="outline" onClick={handlePrevious} disabled={currentQuestion === 0}>
-          <ArrowLeft className="h-4 w-4 mr-2" />
-          Anterior
-        </Button>
-
-        <div className="flex gap-2">
-          {isAnswered && !showFeedback && (
-            <Button variant="outline" onClick={handleShowFeedback}>
-              Ver Explicação
-            </Button>
-          )}
-
-          {isLastQuestion ? (
-            <Button onClick={handleFinishQuiz} disabled={!allQuestionsAnswered}>
-              Finalizar Quiz
-            </Button>
-          ) : (
-            <Button onClick={handleNext} disabled={!isAnswered}>
-              Próxima
-              <ArrowRight className="h-4 w-4 ml-2" />
-            </Button>
-          )}
-        </div>
       </div>
-
-      {/* Question Overview */}
-      <Card className="mt-8">
-        <CardHeader>
-          <CardTitle>Visão Geral das Perguntas</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-5 md:grid-cols-10 gap-2">
-            {quiz.questions.map((_, index) => (
-              <Button
-                key={index}
-                variant={
-                  index === currentQuestion ? "default" : selectedAnswers[index] !== -1 ? "secondary" : "outline"
-                }
-                size="sm"
-                className="aspect-square p-0"
-                onClick={() => {
-                  setCurrentQuestion(index)
-                  setShowFeedback(false)
-                }}
-              >
-                {index + 1}
-              </Button>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
     </div>
   )
 }

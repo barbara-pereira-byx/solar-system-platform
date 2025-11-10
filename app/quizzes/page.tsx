@@ -7,16 +7,19 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { LoadingSpinner } from "@/components/loading-spinner"
 import { Progress } from "@/components/ui/progress"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import type { Quiz } from "@/lib/api"
-import { BookOpen, Clock, Trophy, Star, Play, CheckCircle } from "lucide-react"
+import { BookOpen, Clock, Trophy, Star, Play, CheckCircle, Medal, Crown, Award } from "lucide-react"
 import Link from "next/link"
 
 export default function QuizzesPage() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([])
   const [loading, setLoading] = useState(true)
-  const [completedQuizzes, setCompletedQuizzes] = useState<number[]>([])
+  const [completedQuizzes, setCompletedQuizzes] = useState<(string | number)[]>([])
+  const [selectedQuizRanking, setSelectedQuizRanking] = useState<any[]>([])
+  const [rankingDialogOpen, setRankingDialogOpen] = useState(false)
 
-  // Mock quiz data
+  // Mock quiz data (fallback)
   const mockQuizzes: Quiz[] = [
     {
       id: 1,
@@ -154,13 +157,70 @@ export default function QuizzesPage() {
   ]
 
   useEffect(() => {
-    // Simulate loading and get completed quizzes from localStorage
-    setTimeout(() => {
-      setQuizzes(mockQuizzes)
-      const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
-      setCompletedQuizzes(completed)
-      setLoading(false)
-    }, 1000)
+    const loadQuizzes = async () => {
+      try {
+        setLoading(true)
+        
+        // Try to fetch from API first
+        const response = await fetch('/api/quizzes')
+        if (response.ok) {
+          const apiQuizzes = await response.json()
+          // Transform API data to match the expected format
+          const transformedQuizzes: Quiz[] = apiQuizzes.map((quiz: any) => ({
+            id: quiz.id,
+            title: quiz.title,
+            description: quiz.description || '',
+            difficulty: 'medium' as const,
+            questions: quiz.questions.map((q: any) => {
+              let options = []
+              let correctAnswerIndex = 0
+              
+              if (q.type === 'true_false') {
+                options = ['Verdadeiro', 'Falso']
+                correctAnswerIndex = q.correctAnswer === 'true' ? 0 : 1
+              } else if (Array.isArray(q.options)) {
+                options = q.options
+                if (options.length > 0 && q.correctAnswer) {
+                  const foundIndex = options.findIndex(opt => opt === q.correctAnswer)
+                  correctAnswerIndex = foundIndex >= 0 ? foundIndex : 0
+                }
+              }
+              
+              return {
+                id: q.id,
+                question: q.question,
+                options,
+                correct_answer: correctAnswerIndex,
+                explanation: q.explanation || '',
+              }
+            }),
+            estimated_time: quiz.questions.length * 30,
+            total_questions: quiz.questions.length,
+            created_at: quiz.createdAt,
+            updated_at: quiz.updatedAt,
+          }))
+          setQuizzes(transformedQuizzes)
+          const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
+          setCompletedQuizzes(completed)
+          setLoading(false)
+          return
+        }
+        
+        // Fallback to mock data
+        setQuizzes(mockQuizzes)
+        const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
+        setCompletedQuizzes(completed)
+        setLoading(false)
+      } catch (error) {
+        console.error('Error loading quizzes:', error)
+        setQuizzes(mockQuizzes)
+        const completed = JSON.parse(localStorage.getItem("completedQuizzes") || "[]")
+        setCompletedQuizzes(completed)
+        setLoading(false)
+      }
+    }
+    
+    loadQuizzes()
   }, [])
 
   const getDifficultyColor = (difficulty: string) => {
@@ -194,6 +254,29 @@ export default function QuizzesPage() {
     return (completedQuizzes.length / quizzes.length) * 100
   }
 
+  const getQuizRanking = (quizId: string | number) => {
+    const ranking = JSON.parse(localStorage.getItem("quizRanking") || "[]")
+    return ranking
+      .filter((entry: any) => entry.quiz_id === quizId)
+      .sort((a: any, b: any) => b.score - a.score)
+      .slice(0, 10) // Top 10
+  }
+
+  const openRankingDialog = (quiz: Quiz) => {
+    const ranking = getQuizRanking(quiz.id)
+    setSelectedQuizRanking(ranking)
+    setRankingDialogOpen(true)
+  }
+
+  const getRankingIcon = (position: number) => {
+    switch (position) {
+      case 0: return <Crown className="h-5 w-5 text-yellow-500" />
+      case 1: return <Medal className="h-5 w-5 text-gray-400" />
+      case 2: return <Award className="h-5 w-5 text-amber-600" />
+      default: return <span className="w-5 h-5 flex items-center justify-center text-sm font-bold text-muted-foreground">#{position + 1}</span>
+    }
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-background">
@@ -209,10 +292,10 @@ export default function QuizzesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <Navigation />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-4">Quizzes Educacionais</h1>
@@ -304,12 +387,23 @@ export default function QuizzesPage() {
                       </div>
                     )}
                   </div>
-                  <Button asChild className="w-full mt-4" variant={isCompleted ? "outline" : "default"}>
-                    <Link href={`/quizzes/${quiz.id}`}>
-                      <Play className="h-4 w-4 mr-2" />
-                      {isCompleted ? "Refazer Quiz" : "Iniciar Quiz"}
-                    </Link>
-                  </Button>
+                  <div className="space-y-2 mt-4">
+                    <Button asChild className="w-full" variant={isCompleted ? "outline" : "default"}>
+                      <Link href={`/quizzes/${quiz.id}`}>
+                        <Play className="h-4 w-4 mr-2" />
+                        {isCompleted ? "Refazer Quiz" : "Iniciar Quiz"}
+                      </Link>
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="w-full" 
+                      onClick={() => openRankingDialog(quiz)}
+                    >
+                      <Trophy className="h-4 w-4 mr-2" />
+                      Ver Ranking
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             )
@@ -345,6 +439,48 @@ export default function QuizzesPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Ranking Dialog */}
+      <Dialog open={rankingDialogOpen} onOpenChange={setRankingDialogOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <Trophy className="h-5 w-5 text-yellow-500" />
+              Ranking do Quiz
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-3 max-h-96 overflow-y-auto">
+            {selectedQuizRanking.length > 0 ? (
+              selectedQuizRanking.map((entry, index) => (
+                <div key={index} className="flex items-center gap-3 p-3 rounded-lg bg-muted/30">
+                  <div className="flex-shrink-0">
+                    {getRankingIcon(index)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-medium truncate">{entry.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {new Date(entry.date).toLocaleDateString('pt-BR')}
+                    </p>
+                  </div>
+                  <div className="flex-shrink-0">
+                    <Badge variant={index < 3 ? "default" : "secondary"}>
+                      {entry.score}%
+                    </Badge>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="text-center py-8">
+                <Trophy className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
+                <p className="text-muted-foreground">Nenhum resultado ainda</p>
+                <p className="text-sm text-muted-foreground mt-1">
+                  Seja o primeiro a completar este quiz!
+                </p>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

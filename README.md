@@ -24,7 +24,6 @@ O **Sistema Solar Interativo** é uma plataforma educacional desenvolvida para c
 - Visualizações 3D interativas dos planetas
 - Dados científicos precisos e atualizados
 - Quizzes educativos personalizados
-- Dashboard para professores acompanharem o progresso dos alunos
 - Comparações entre planetas e simulações de gravidade
 
 ## ✨ Funcionalidades
@@ -162,7 +161,6 @@ solar-system-platform/
 │   ├── 📁 comparar/                 # Página de comparação de planetas
 │   ├── 📁 explorar/                 # Página de exploração do sistema solar
 │   ├── 📁 planeta/[id]/             # Páginas dinâmicas dos planetas
-│   ├── 📁 professores/              # Dashboard dos professores
 │   ├── 📁 quizzes/                  # Sistema de quizzes
 │   │   └── 📁 [id]/                 # Quiz específico por ID
 │   ├── 📄 globals.css               # Estilos globais
@@ -239,7 +237,6 @@ solar-system-platform/
 | `/comparar` | Comparação entre planetas | `app/comparar/page.tsx` |
 | `/quizzes` | Lista de quizzes disponíveis | `app/quizzes/page.tsx` |
 | `/quizzes/[id]` | Quiz específico | `app/quizzes/[id]/page.tsx` |
-| `/professores` | Dashboard para professores | `app/professores/page.tsx` |
 
 ## 🧩 Componentes Principais
 
