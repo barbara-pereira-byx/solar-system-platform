@@ -4,6 +4,8 @@ import { useState } from "react"
 import { Navigation } from "@/components/navigation"
 import { WorkingSolarSystem } from "@/components/solar-system/working-solar-system"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Eye } from "lucide-react"
 import { FIXED_PLANETS, type Planet, type Moon } from "@/lib/planets-data"
 import type { Asteroid } from "@/lib/asteroids-data"
 
@@ -12,6 +14,31 @@ export default function ExplorarPage() {
   
   // Usar dados fixos dos planetas
   const planets = FIXED_PLANETS
+
+  // Funções para focar em diferentes objetos do sistema solar
+  const focusOnAsteroidBelt = () => {
+    if (typeof window !== 'undefined' && (window as any).focusOnAsteroidBelt) {
+      ;(window as any).focusOnAsteroidBelt()
+    }
+  }
+
+  const focusOnPluto = () => {
+    if (typeof window !== 'undefined' && (window as any).focusOnPluto) {
+      ;(window as any).focusOnPluto()
+    }
+  }
+
+  const focusOnKuiperBelt = () => {
+    if (typeof window !== 'undefined' && (window as any).focusOnKuiperBelt) {
+      ;(window as any).focusOnKuiperBelt()
+    }
+  }
+
+  const focusOnOortCloud = () => {
+    if (typeof window !== 'undefined' && (window as any).focusOnOortCloud) {
+      ;(window as any).focusOnOortCloud()
+    }
+  }
 
   return (
     <div className="h-screen overflow-hidden bg-background">
@@ -66,7 +93,18 @@ export default function ExplorarPage() {
           <CardContent className="pt-0 max-h-64 overflow-y-auto">
             <div className="space-y-3 text-sm">
               <div>
-                <h4 className="font-semibold text-primary mb-1">Cinturão de Asteroides</h4>
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="font-semibold" style={{ color: '#8B7355' }}>Cinturão de Asteroides</h4>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 px-2 text-xs"
+                    onClick={focusOnAsteroidBelt}
+                  >
+                    <Eye className="h-3 w-3 mr-1" />
+                    Ver
+                  </Button>
+                </div>
                 <p className="text-muted-foreground text-xs mb-1">
                   Entre Marte e Júpiter (pontos marrons)
                 </p>
@@ -78,21 +116,20 @@ export default function ExplorarPage() {
               </div>
               
               <div>
-                <h4 className="font-semibold text-orange-400 mb-1">Plutão</h4>
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="font-semibold" style={{ color: '#20B2AA' }}>Cinturão de Kuiper</h4>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 px-2 text-xs"
+                    onClick={focusOnKuiperBelt}
+                  >
+                    <Eye className="h-3 w-3 mr-1" />
+                    Ver
+                  </Button>
+                </div>
                 <p className="text-muted-foreground text-xs mb-1">
-                  Planeta anão visível (ponto bege)
-                </p>
-                <ul className="text-xs space-y-0.5 text-muted-foreground">
-                  <li>• Ex-nono planeta do Sistema Solar</li>
-                  <li>• Reclassificado em 2006</li>
-                  <li>• Possui 5 luas, incluindo Caronte</li>
-                </ul>
-              </div>
-              
-              <div>
-                <h4 className="font-semibold text-blue-400 mb-1">Cinturão de Kuiper</h4>
-                <p className="text-muted-foreground text-xs mb-1">
-                  Além de Netuno (pontos azuis)
+                  Além de Netuno (pontos verde-água)
                 </p>
                 <ul className="text-xs space-y-0.5 text-muted-foreground">
                   <li>• Éris: Mais massivo que Plutão</li>
@@ -102,7 +139,18 @@ export default function ExplorarPage() {
               </div>
               
               <div>
-                <h4 className="font-semibold text-purple-400 mb-1">Nuvem de Oort</h4>
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="font-semibold" style={{ color: '#87CEEB' }}>Nuvem de Oort</h4>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 px-2 text-xs"
+                    onClick={focusOnOortCloud}
+                  >
+                    <Eye className="h-3 w-3 mr-1" />
+                    Ver
+                  </Button>
+                </div>
                 <p className="text-muted-foreground text-xs mb-1">
                   Esfera ao redor do sistema (pontos brilhantes)
                 </p>
