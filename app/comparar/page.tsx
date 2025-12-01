@@ -60,7 +60,7 @@ function PlanetImage({ planet, size = 48 }: { planet: Planet; size?: number }) {
 
 export default function CompararPage() {
   const [selectedPlanets, setSelectedPlanets] = useState<Planet[]>([])
-  const [userWeight, setUserWeight] = useState<number>(70)
+  const [userWeight, setUserWeight] = useState<number>(0)
   
   // Usar dados fixos dos planetas
   const planets = FIXED_PLANETS
