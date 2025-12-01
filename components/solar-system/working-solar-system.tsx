@@ -92,7 +92,7 @@ function PlanetMesh({
   )
 }
 
-function Sun() {
+function Sun({ onClick }: { onClick?: () => void }) {
   const meshRef = useRef<THREE.Mesh>(null!)
 
   useFrame((state, delta) => {
@@ -102,7 +102,19 @@ function Sun() {
   })
 
   return (
-    <mesh ref={meshRef}>
+    <mesh 
+      ref={meshRef}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick?.()
+      }}
+      onPointerOver={() => {
+        document.body.style.cursor = "pointer"
+      }}
+      onPointerOut={() => {
+        document.body.style.cursor = "auto"
+      }}
+    >
       <sphereGeometry args={[3, 32, 32]} />
       <meshBasicMaterial color="#FDB813" />
       <pointLight intensity={2} distance={200} />
@@ -466,6 +478,61 @@ function MoonMesh({
   )
 }
 
+function CometEncke({ onCometClick }: { onCometClick?: (comet: Asteroid) => void }) {
+  const meshRef = useRef<THREE.Mesh>(null!)
+  const groupRef = useRef<THREE.Group>(null!)
+  const [time, setTime] = useState(Math.random() * Math.PI * 2)
+  const orbitalRadius = 12 // Raio orbital do Cometa Encke
+  const speed = 1.5 // Velocidade orbital (mais rápido que planetas por ter período curto)
+
+  useFrame((state, delta) => {
+    if (!groupRef.current || !meshRef.current) return
+    
+    if (!globalAnimationState.isPaused) {
+      const effectiveSpeed = speed * globalAnimationState.speed
+      
+      // Movimento orbital
+      setTime(prev => prev + delta * effectiveSpeed)
+      groupRef.current.position.x = Math.cos(time) * orbitalRadius
+      groupRef.current.position.z = Math.sin(time) * orbitalRadius
+      
+      // Rotação do cometa
+      meshRef.current.rotation.y += delta * effectiveSpeed * 2
+    }
+  })
+
+  return (
+    <group ref={groupRef}>
+      <mesh
+        ref={meshRef}
+        scale={0.08}
+        onClick={(e) => {
+          e.stopPropagation()
+          const enckeComet = OORT_CLOUD_OBJECTS.find(obj => obj.name === "encke")
+          if (enckeComet && onCometClick) {
+            onCometClick(enckeComet)
+          }
+        }}
+        onPointerOver={() => {
+          document.body.style.cursor = "pointer"
+        }}
+        onPointerOut={() => {
+          document.body.style.cursor = "auto"
+        }}
+      >
+        <sphereGeometry args={[1, 8, 8]} />
+        <meshStandardMaterial 
+          color="#9370DB" 
+          opacity={0.8} 
+          transparent 
+          emissive="#9370DB" 
+          emissiveIntensity={0.3}
+        />
+      </mesh>
+    </group>
+  )
+}
+
 function CameraController({ onOortView }: { onOortView?: () => void }) {
   const { camera, gl } = useThree()
   
@@ -515,6 +582,10 @@ function CameraController({ onOortView }: { onOortView?: () => void }) {
       focusOnObject(160, 50) // Posição da Nuvem de Oort
     }
     
+    ;(window as any).focusOnInnerSystem = () => {
+      focusOnObject(12, 15) // Posição do sistema interno onde está o Cometa Encke
+    }
+    
     if (onOortView) {
       const handleOortView = () => {
         focusOnObject(160, 50)
@@ -529,6 +600,39 @@ function CameraController({ onOortView }: { onOortView?: () => void }) {
 
 function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
   const [planetPositions, setPlanetPositions] = useState<Record<string, THREE.Vector3>>({})
+  
+  // Sun data object
+  const sunData = {
+    id: "sun",
+    name: "sun",
+    portuguese_name: "Sol",
+    radius: 696340,
+    mass: 1.989e30,
+    gravity: 274,
+    average_temperature: 5778,
+    distance_from_sun: 0,
+    orbital_period: 0,
+    rotation_period: 609.12,
+    description: "A estrela central do nosso Sistema Solar, uma esfera de plasma quente mantida por reações de fusão nuclear em seu núcleo.",
+    curiosities: [
+      "Contém 99,86% da massa do Sistema Solar",
+      "Temperatura do núcleo atinge 15 milhões de graus Celsius",
+      "A luz do Sol demora 8 minutos para chegar à Terra",
+      "Converte 4 milhões de toneladas de matéria em energia por segundo"
+    ],
+    image_url: "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg",
+    color: "#FDB813",
+    moons_count: 0,
+    composition: "73% hidrogênio, 25% hélio, 2% elementos mais pesados",
+    atmosphere: "Corona de plasma superaquecido",
+    magnetic_field: true,
+    rings: false,
+    axial_tilt: 7.25,
+    escape_velocity: 617.5,
+    albedo: 0,
+    created_at: "",
+    updated_at: ""
+  }
   
   const getOrbitalRadius = (distance: number) => {
     // Distâncias fixas organizadas para cada planeta
@@ -568,7 +672,7 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
       <ambientLight intensity={0.3} />
       <Stars radius={500} depth={100} count={30000} factor={10} />
       
-      <Sun />
+      <Sun onClick={() => onPlanetSelect?.(sunData)} />
       
       {/* Anéis orbitais dos planetas */}
       <OrbitRing radius={15} /> {/* Mercúrio */}
@@ -643,6 +747,9 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
         count={300} 
         onCometClick={onPlanetSelect}
       />
+      
+      {/* Cometa Encke (período curto) - orbitando o Sol */}
+      <CometEncke onCometClick={onPlanetSelect} />
       
       {planets.map((planet, index) => {
         const orbitalRadius = getOrbitalRadius(planet.distance_from_sun)
@@ -742,6 +849,8 @@ function SimulationControls() {
     globalAnimationState.speed = newSpeed
   }
 
+
+
   return (
     <Card className="w-80 bg-background/90 backdrop-blur-sm">
       <CardHeader className="pb-3">
@@ -772,6 +881,8 @@ function SimulationControls() {
             className="w-full"
           />
         </div>
+        
+
       </CardContent>
     </Card>
   )
