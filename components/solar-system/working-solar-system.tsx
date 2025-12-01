@@ -161,7 +161,8 @@ function AsteroidBelt({ innerRadius, outerRadius, count = 150, onAsteroidClick }
     curiosities: SOLAR_SYSTEM_REGIONS.main_belt.curiosities,
     type: "asteroid",
     location: "main_belt",
-    color: "#8B7355"
+    color: "#8B7355",
+    image_url: "https://images-assets.nasa.gov/image/PIA15678/PIA15678~orig.jpg"
   }
 
   return (
@@ -255,7 +256,8 @@ function OortCloud({ radius = 180, count = 200, onCometClick }: {
     curiosities: SOLAR_SYSTEM_REGIONS.oort_cloud.curiosities,
     type: "comet",
     location: "oort_cloud",
-    color: "#87CEEB"
+    color: "#87CEEB",
+    image_url: "https://images-assets.nasa.gov/image/PIA18117/PIA18117~orig.jpg"
   }
 
   return (
@@ -350,7 +352,8 @@ function KuiperBelt({ radius, count = 100, onObjectClick }: {
     curiosities: SOLAR_SYSTEM_REGIONS.kuiper_belt.curiosities,
     type: "asteroid",
     location: "kuiper_belt",
-    color: "#20B2AA"
+    color: "#20B2AA",
+    image_url: "https://images-assets.nasa.gov/image/PIA19952/PIA19952~orig.jpg"
   }
 
   return (
@@ -607,7 +610,7 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
           rotation_period: 153.3,
           description: "Ex-planeta, agora classificado como planeta anão no Cinturão de Kuiper.",
           curiosities: [],
-          image_url: "",
+          image_url: "https://images-assets.nasa.gov/image/PIA19952/PIA19952~orig.jpg",
           color: "#D2B48C",
           moons_count: 5,
           composition: "Rocha e gelo",
@@ -623,37 +626,13 @@ function SolarSystemScene({ planets, onPlanetSelect }: SolarSystemProps) {
         orbitalRadius={100}
         scale={0.4}
         speed={0.01}
-        onClick={() => onPlanetSelect?.({
-          id: "pluto",
-          name: "pluto",
-          portuguese_name: "Plutão",
-          radius: 1188.3,
-          mass: 1.31e22,
-          gravity: 0.62,
-          average_temperature: -229,
-          distance_from_sun: 5906400000,
-          orbital_period: 90560,
-          rotation_period: 153.3,
-          description: "Ex-planeta, agora classificado como planeta anão no Cinturão de Kuiper.",
-          curiosities: [
-            "Ex-nono planeta do Sistema Solar",
-            "Reclassificado como planeta anão em 2006",
-            "Possui cinco luas conhecidas",
-            "Órbita excêntrica e inclinada"
-          ],
-          image_url: "",
-          color: "#D2B48C",
-          moons_count: 5,
-          composition: "Rocha e gelo",
-          atmosphere: "Nitrogênio tênue",
-          magnetic_field: false,
-          rings: false,
-          axial_tilt: 122.5,
-          escape_velocity: 1.21,
-          albedo: 0.49,
-          created_at: "",
-          updated_at: ""
-        })}
+        onClick={() => {
+          // Usar o objeto Plutão do asteroids-data.ts que já tem a imagem
+          const plutoAsteroid = KUIPER_BELT_OBJECTS.find(obj => obj.name === "pluto")
+          if (plutoAsteroid) {
+            onPlanetSelect?.(plutoAsteroid)
+          }
+        }}
         onPositionUpdate={() => {}}
       />
       <OrbitRing radius={100} />
@@ -799,6 +778,19 @@ function SimulationControls() {
 }
 
 function PlanetModal({ planet, onClose }: { planet: Planet | Moon | Asteroid; onClose: () => void }) {
+  // Detectar image_url de forma mais robusta para todos os tipos
+  const planetAny = planet as any
+  const imageUrl = planetAny.image_url || null
+  
+  // Debug
+  if (imageUrl) {
+    console.log(`PlanetModal - ${planet.portuguese_name}: Loading image from`, imageUrl)
+  } else {
+    console.warn(`PlanetModal - ${planet.portuguese_name}: No image_url found`, {
+      type: planetAny.type || 'planet',
+      keys: Object.keys(planet)
+    })
+  }
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
       <Card className="w-full max-w-4xl h-[85vh] flex flex-col">
@@ -823,15 +815,46 @@ function PlanetModal({ planet, onClose }: { planet: Planet | Moon | Asteroid; on
         <CardContent className="flex-1 overflow-y-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 h-full">
             <div className="space-y-4">
-              <div className="w-full h-64 rounded-lg overflow-hidden bg-slate-900">
-                <img 
-                  src={('image_url' in planet ? planet.image_url : null) || "/placeholder.jpg"} 
-                  alt={planet.portuguese_name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.src = "/placeholder.jpg"
-                  }}
-                />
+              <div className="w-full h-64 rounded-lg overflow-hidden bg-slate-900 flex items-center justify-center relative">
+                {imageUrl && imageUrl !== '/placeholder.jpg' && imageUrl.trim() !== '' ? (
+                  <img 
+                    src={imageUrl} 
+                    alt={planet.portuguese_name}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      console.error(`Failed to load image for ${planet.portuguese_name}:`, imageUrl)
+                      // Se a imagem falhar, substitui pelo fallback colorido
+                      const target = e.currentTarget
+                      const parent = target.parentElement
+                      if (parent) {
+                        target.style.display = 'none'
+                        // Remove qualquer fallback existente
+                        const existingFallback = parent.querySelector('.image-fallback')
+                        if (existingFallback) {
+                          existingFallback.remove()
+                        }
+                        const fallback = document.createElement('div')
+                        fallback.className = 'image-fallback w-full h-full flex items-center justify-center absolute inset-0'
+                        fallback.style.backgroundColor = planet.color || '#8B7355'
+                        const text = document.createElement('span')
+                        text.className = 'text-white/70 text-lg font-semibold'
+                        text.textContent = planet.portuguese_name
+                        fallback.appendChild(text)
+                        parent.appendChild(fallback)
+                      }
+                    }}
+                    onLoad={() => {
+                      console.log(`Successfully loaded image for ${planet.portuguese_name}`)
+                    }}
+                  />
+                ) : (
+                  <div 
+                    className="w-full h-full flex items-center justify-center"
+                    style={{ backgroundColor: planet.color || '#8B7355' }}
+                  >
+                    <span className="text-white/70 text-lg font-semibold">{planet.portuguese_name}</span>
+                  </div>
+                )}
               </div>
               
               <div>

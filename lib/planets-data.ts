@@ -329,7 +329,7 @@ export const FIXED_MOONS: Moon[] = [
       "Tem água congelada nos polos",
       "Formou-se há 4,5 bilhões de anos"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001435/GSFC_20171208_Archive_e001435~orig.jpg",
     color: "#C0C0C0",
     composition: "Crosta de anortosito, manto de olivina e piroxênio",
     atmosphere: "Exosfera tênue de hélio, neônio e hidrogênio",
@@ -357,7 +357,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Tem enxofre líquido na superfície"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00502/PIA00502~orig.jpg",
     color: "#FFFF00",
     composition: "Núcleo rochoso, manto de silicatos, crosta de enxofre",
     atmosphere: "Exosfera tênue de dióxido de enxofre",
@@ -384,7 +384,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Principal candidata para vida extraterrestre"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00502/PIA00502~orig.jpg",
     color: "#FFFFFF",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo de água",
     atmosphere: "Exosfera tênue de oxigênio",
@@ -411,7 +411,7 @@ export const FIXED_MOONS: Moon[] = [
       "Única lua com campo magnético próprio",
       "Sempre mostra a mesma face para Júpiter"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00502/PIA00502~orig.jpg",
     color: "#C0C0C0",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo e rocha",
     atmosphere: "Exosfera tênue de oxigênio",
@@ -438,7 +438,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Possível oceano subterrâneo"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00502/PIA00502~orig.jpg",
     color: "#8B7355",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo e rocha",
     atmosphere: "Exosfera tênue de dióxido de carbono",
@@ -1249,7 +1249,7 @@ export const FIXED_MOONS: Moon[] = [
       "É uma das menores luas do Sistema Solar",
       "Sempre mostra a mesma face para Marte"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA10368/PIA10368~orig.jpg",
     color: "#8B7355",
     composition: "Rocha carbonácea com gelo",
     atmosphere: "Sem atmosfera",
@@ -1276,7 +1276,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Marte",
       "Foi descoberta em 1877"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA10368/PIA10368~orig.jpg",
     color: "#8B7355",
     composition: "Rocha carbonácea com gelo",
     atmosphere: "Sem atmosfera",
@@ -1304,7 +1304,7 @@ export const FIXED_MOONS: Moon[] = [
       "Tem lagos de metano e etano líquidos",
       "Possui ciclo hidrológico similar ao da Terra"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA09184/PIA09184~orig.jpg",
     color: "#FFA500",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo e hidrocarbonetos",
     atmosphere: "95% nitrogênio, 5% metano e outros hidrocarbonetos",
@@ -1331,7 +1331,7 @@ export const FIXED_MOONS: Moon[] = [
       "Uma das superfícies mais refletivas do Sistema Solar",
       "Fonte dos anéis E de Saturno"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA06254/PIA06254~orig.jpg",
     color: "#FFFFFF",
     composition: "Gelo de água com núcleo rochoso",
     atmosphere: "Exosfera tênue de vapor d'água",
@@ -2548,7 +2548,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível oceano subterrâneo",
       "Será destruída por Netuno em bilhões de anos"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00348/PIA00348~orig.jpg",
     color: "#C0C0C0",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo de nitrogênio",
     atmosphere: "Exosfera tênue de nitrogênio",
