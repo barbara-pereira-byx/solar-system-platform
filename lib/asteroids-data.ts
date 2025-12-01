@@ -13,6 +13,7 @@ export interface Asteroid {
   type: 'asteroid' | 'comet' | 'dwarf_planet'
   location: 'main_belt' | 'kuiper_belt' | 'oort_cloud'
   color: string
+  image_url?: string
 }
 
 // Principais asteroides do Cinturão Principal
@@ -35,7 +36,8 @@ export const MAIN_BELT_ASTEROIDS: Asteroid[] = [
     ],
     type: "dwarf_planet",
     location: "main_belt",
-    color: "#C0C0C0"
+    color: "#C0C0C0",
+    image_url: "https://images-assets.nasa.gov/image/PIA22660/PIA22660~orig.jpg"
   },
   {
     id: "asteroid-2",
@@ -55,7 +57,8 @@ export const MAIN_BELT_ASTEROIDS: Asteroid[] = [
     ],
     type: "asteroid",
     location: "main_belt",
-    color: "#8B7355"
+    color: "#8B7355",
+    image_url: "https://images-assets.nasa.gov/image/PIA15678/PIA15678~orig.jpg"
   },
   {
     id: "asteroid-3",
@@ -75,7 +78,8 @@ export const MAIN_BELT_ASTEROIDS: Asteroid[] = [
     ],
     type: "asteroid",
     location: "main_belt",
-    color: "#2F2F2F"
+    color: "#2F2F2F",
+    image_url: "https://images-assets.nasa.gov/image/PIA23170/PIA23170~orig.jpg"
   },
   {
     id: "asteroid-4",
@@ -95,7 +99,50 @@ export const MAIN_BELT_ASTEROIDS: Asteroid[] = [
     ],
     type: "asteroid",
     location: "main_belt",
-    color: "#2F2F2F"
+    color: "#2F2F2F",
+    image_url: "https://images-assets.nasa.gov/image/PIA23171/PIA23171~orig.jpg"
+  },
+  {
+    id: "asteroid-5",
+    name: "apophis",
+    portuguese_name: "Apophis",
+    radius: 0.185,
+    mass: 2.7e10,
+    distance_from_sun: 143600000,
+    orbital_period: 324,
+    description: "Asteroide potencialmente perigoso que passará muito próximo da Terra em 2029.",
+    curiosities: [
+      "Asteroide potencialmente perigoso (PHA)",
+      "Passará a 31.000 km da Terra em 2029",
+      "Visível a olho nu durante a aproximação",
+      "Formato alongado e irregular",
+      "Descoberto em 2004"
+    ],
+    type: "asteroid",
+    location: "main_belt",
+    color: "#8B4513",
+    image_url: "https://images-assets.nasa.gov/image/PIA23239/PIA23239~orig.jpg"
+  },
+  {
+    id: "asteroid-6",
+    name: "bennu",
+    portuguese_name: "Bennu",
+    radius: 0.245,
+    mass: 7.8e10,
+    distance_from_sun: 168500000,
+    orbital_period: 437,
+    description: "Asteroide visitado pela missão OSIRIS-REx da NASA, que coletou amostras em 2020.",
+    curiosities: [
+      "Visitado pela missão OSIRIS-REx",
+      "Amostras coletadas retornaram à Terra em 2023",
+      "Formato de diamante achatado",
+      "Superfície coberta de rochas soltas",
+      "Asteroide potencialmente perigoso"
+    ],
+    type: "asteroid",
+    location: "main_belt",
+    color: "#2F2F2F",
+    image_url: "https://images-assets.nasa.gov/image/PIA23138/PIA23138~orig.jpg"
   }
 ]
 
@@ -119,7 +166,8 @@ export const KUIPER_BELT_OBJECTS: Asteroid[] = [
     ],
     type: "dwarf_planet",
     location: "kuiper_belt",
-    color: "#D2B48C"
+    color: "#D2B48C",
+    image_url: "https://images-assets.nasa.gov/image/PIA19952/PIA19952~orig.jpg"
   },
   {
     id: "kbo-2",
@@ -139,7 +187,8 @@ export const KUIPER_BELT_OBJECTS: Asteroid[] = [
     ],
     type: "dwarf_planet",
     location: "kuiper_belt",
-    color: "#F5F5DC"
+    color: "#F5F5DC",
+    image_url: "https://images-assets.nasa.gov/image/PIA21464/PIA21464~orig.jpg"
   },
   {
     id: "kbo-3",
@@ -159,7 +208,8 @@ export const KUIPER_BELT_OBJECTS: Asteroid[] = [
     ],
     type: "dwarf_planet",
     location: "kuiper_belt",
-    color: "#CD853F"
+    color: "#CD853F",
+    image_url: "https://images-assets.nasa.gov/image/PIA19056/PIA19056~orig.jpg"
   },
   {
     id: "kbo-4",
@@ -179,11 +229,12 @@ export const KUIPER_BELT_OBJECTS: Asteroid[] = [
     ],
     type: "dwarf_planet",
     location: "kuiper_belt",
-    color: "#F0F8FF"
+    color: "#F0F8FF",
+    image_url: "https://images-assets.nasa.gov/image/PIA21464/PIA21464~orig.jpg"
   }
 ]
 
-// Cometas famosos da Nuvem de Oort
+// Cometas famosos da Nuvem de Oort e cometas de período curto
 export const OORT_CLOUD_OBJECTS: Asteroid[] = [
   {
     id: "comet-1",
@@ -203,7 +254,8 @@ export const OORT_CLOUD_OBJECTS: Asteroid[] = [
     ],
     type: "comet",
     location: "oort_cloud",
-    color: "#E6E6FA"
+    color: "#E6E6FA",
+    image_url: "https://images-assets.nasa.gov/image/PIA18117/PIA18117~orig.jpg"
   },
   {
     id: "comet-2",
@@ -223,7 +275,8 @@ export const OORT_CLOUD_OBJECTS: Asteroid[] = [
     ],
     type: "comet",
     location: "oort_cloud",
-    color: "#B0E0E6"
+    color: "#B0E0E6",
+    image_url: "https://images-assets.nasa.gov/image/PIA01288/PIA01288~orig.jpg"
   },
   {
     id: "comet-3",
@@ -243,7 +296,50 @@ export const OORT_CLOUD_OBJECTS: Asteroid[] = [
     ],
     type: "comet",
     location: "oort_cloud",
-    color: "#F0F8FF"
+    color: "#F0F8FF",
+    image_url: "https://images-assets.nasa.gov/image/PIA01289/PIA01289~orig.jpg"
+  },
+  {
+    id: "comet-4",
+    name: "encke",
+    portuguese_name: "Cometa Encke",
+    radius: 2.4,
+    mass: 3.7e13,
+    distance_from_sun: 619000000, // Afélio
+    orbital_period: 1204, // 3.3 anos
+    description: "Cometa de período mais curto conhecido, completa uma órbita a cada 3,3 anos.",
+    curiosities: [
+      "Cometa de período mais curto conhecido",
+      "Completa órbita a cada 3,3 anos",
+      "Origem da chuva de meteoros Tauridas",
+      "Núcleo pequeno e escuro",
+      "Descoberto em 1818"
+    ],
+    type: "comet",
+    location: "oort_cloud",
+    color: "#D3D3D3",
+    image_url: "https://images-assets.nasa.gov/image/PIA03519/PIA03519~orig.jpg"
+  },
+  {
+    id: "comet-5",
+    name: "swift-tuttle",
+    portuguese_name: "Cometa Swift-Tuttle",
+    radius: 13,
+    mass: 1.3e15,
+    distance_from_sun: 7700000000, // Afélio
+    orbital_period: 49197, // 135 anos
+    description: "Cometa responsável pela chuva de meteoros Perseidas, uma das mais espetaculares do ano.",
+    curiosities: [
+      "Origem da chuva de meteoros Perseidas",
+      "Período orbital de 135 anos",
+      "Núcleo de 26 km de diâmetro",
+      "Última passagem em 1992",
+      "Próxima passagem em 2126"
+    ],
+    type: "comet",
+    location: "oort_cloud",
+    color: "#E0E0E0",
+    image_url: "https://images-assets.nasa.gov/image/PIA03520/PIA03520~orig.jpg"
   }
 ]
 

@@ -156,8 +156,35 @@ export default function ExplorarPage() {
                 </p>
                 <ul className="text-xs space-y-0.5 text-muted-foreground">
                   <li>• Trilhões de cometas gelados</li>
-                  <li>• Cometa Halley: Período de 75 anos</li>
                   <li>• Limite gravitacional do Sistema Solar</li>
+                  <li>• Fonte dos cometas de período longo</li>
+                </ul>
+              </div>
+              
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <h4 className="font-semibold" style={{ color: '#9370DB' }}>Cometa Encke</h4>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-7 px-2 text-xs"
+                    onClick={() => {
+                      if (typeof window !== 'undefined' && (window as any).focusOnInnerSystem) {
+                        ;(window as any).focusOnInnerSystem()
+                      }
+                    }}
+                  >
+                    <Eye className="h-3 w-3 mr-1" />
+                    Ver
+                  </Button>
+                </div>
+                <p className="text-muted-foreground text-xs mb-1">
+                  Sistema solar interno (ponto brilhante)
+                </p>
+                <ul className="text-xs space-y-0.5 text-muted-foreground">
+                  <li>• Período orbital mais curto (3,3 anos)</li>
+                  <li>• Origem da chuva de meteoros Taurídas</li>
+                  <li>• Núcleo pequeno de aproximadamente 4,8 km</li>
                 </ul>
               </div>
             </div>

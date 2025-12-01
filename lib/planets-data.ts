@@ -71,7 +71,7 @@ export const FIXED_PLANETS: Planet[] = [
       "Um dia em Mercúrio dura 176 dias terrestres",
       "É o planeta mais rápido do Sistema Solar"
     ],
-    image_url: "/mercury-texture.png",
+    image_url: "https://images-assets.nasa.gov/image/PIA15190/PIA15190~orig.jpg",
     color: "#8C7853",
     moons_count: 0,
     composition: "70% metais, 30% silicatos",
@@ -329,7 +329,7 @@ export const FIXED_MOONS: Moon[] = [
       "Tem água congelada nos polos",
       "Formou-se há 4,5 bilhões de anos"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00302/PIA00302~orig.jpg",
     color: "#C0C0C0",
     composition: "Crosta de anortosito, manto de olivina e piroxênio",
     atmosphere: "Exosfera tênue de hélio, neônio e hidrogênio",
@@ -357,7 +357,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Tem enxofre líquido na superfície"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00583/PIA00583~orig.jpg",
     color: "#FFFF00",
     composition: "Núcleo rochoso, manto de silicatos, crosta de enxofre",
     atmosphere: "Exosfera tênue de dióxido de enxofre",
@@ -384,7 +384,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Principal candidata para vida extraterrestre"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA19048/PIA19048~orig.jpg",
     color: "#FFFFFF",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo de água",
     atmosphere: "Exosfera tênue de oxigênio",
@@ -411,7 +411,7 @@ export const FIXED_MOONS: Moon[] = [
       "Única lua com campo magnético próprio",
       "Sempre mostra a mesma face para Júpiter"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00716/PIA00716~orig.jpg",
     color: "#C0C0C0",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo e rocha",
     atmosphere: "Exosfera tênue de oxigênio",
@@ -438,7 +438,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Possível oceano subterrâneo"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA01667/PIA01667~orig.jpg",
     color: "#8B7355",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo e rocha",
     atmosphere: "Exosfera tênue de dióxido de carbono",
@@ -465,7 +465,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Foi descoberta em 1892"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B4513",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -492,7 +492,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1904"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -519,7 +519,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1905"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -546,7 +546,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1908"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -573,7 +573,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1914"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -600,7 +600,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1938"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -627,7 +627,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1938"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -654,7 +654,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1951"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -681,7 +681,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1974"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -708,7 +708,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Foi descoberta em 1979"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -735,7 +735,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Foi descoberta em 1979"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -762,7 +762,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Júpiter",
       "Foi descoberta em 1979"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -789,7 +789,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 1975"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -816,7 +816,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -843,7 +843,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -870,7 +870,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -897,7 +897,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -924,7 +924,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -951,7 +951,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -978,7 +978,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1005,7 +1005,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1032,7 +1032,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1059,7 +1059,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1086,7 +1086,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1113,7 +1113,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1140,7 +1140,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1167,7 +1167,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1194,7 +1194,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1221,7 +1221,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1249,7 +1249,7 @@ export const FIXED_MOONS: Moon[] = [
       "É uma das menores luas do Sistema Solar",
       "Sempre mostra a mesma face para Marte"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA10368/PIA10368~orig.jpg",
     color: "#8B7355",
     composition: "Rocha carbonácea com gelo",
     atmosphere: "Sem atmosfera",
@@ -1276,7 +1276,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Marte",
       "Foi descoberta em 1877"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA10368/PIA10368~orig.jpg",
     color: "#8B7355",
     composition: "Rocha carbonácea com gelo",
     atmosphere: "Sem atmosfera",
@@ -1304,7 +1304,7 @@ export const FIXED_MOONS: Moon[] = [
       "Tem lagos de metano e etano líquidos",
       "Possui ciclo hidrológico similar ao da Terra"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA09184/PIA09184~orig.jpg",
     color: "#FFA500",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo e hidrocarbonetos",
     atmosphere: "95% nitrogênio, 5% metano e outros hidrocarbonetos",
@@ -1331,7 +1331,7 @@ export const FIXED_MOONS: Moon[] = [
       "Uma das superfícies mais refletivas do Sistema Solar",
       "Fonte dos anéis E de Saturno"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA06254/PIA06254~orig.jpg",
     color: "#FFFFFF",
     composition: "Gelo de água com núcleo rochoso",
     atmosphere: "Exosfera tênue de vapor d'água",
@@ -1358,7 +1358,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível oceano líquido subterrâneo",
       "Sempre mostra a mesma face para Saturno"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07763/PIA07763~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com núcleo rochoso",
     atmosphere: "Exosfera tênue de oxigênio e CO2",
@@ -1385,7 +1385,7 @@ export const FIXED_MOONS: Moon[] = [
       "Órbita inclinada e distante",
       "Sempre mostra a mesma face para Saturno"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1412,7 +1412,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Tem uma pequena lua co-orbital"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com núcleo rochoso",
     atmosphere: "Exosfera tênue de oxigênio",
@@ -1439,7 +1439,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Tem duas pequenas luas troianas"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com pequeno núcleo rochoso",
     atmosphere: "Sem atmosfera",
@@ -1466,7 +1466,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Uma das menores luas esféricas conhecidas"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA12570/PIA12570~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com pequeno núcleo rochoso",
     atmosphere: "Sem atmosfera",
@@ -1493,7 +1493,7 @@ export const FIXED_MOONS: Moon[] = [
       "Superfície esponjosa e porosa",
       "Uma das luas mais distantes de Saturno"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1520,7 +1520,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em objetos do Cinturão de Kuiper",
       "Fonte de material para os anéis de Saturno"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#2F2F2F",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1547,7 +1547,7 @@ export const FIXED_MOONS: Moon[] = [
       "Uma das menores luas de Saturno",
       "Órbita dentro dos anéis principais"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1574,7 +1574,7 @@ export const FIXED_MOONS: Moon[] = [
       "Órbita próxima aos anéis",
       "Descoberta em 1980"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1601,7 +1601,7 @@ export const FIXED_MOONS: Moon[] = [
       "Interage com o anel F criando estruturas",
       "Descoberta em 1980"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1628,7 +1628,7 @@ export const FIXED_MOONS: Moon[] = [
       "Órbita caótica e irregular",
       "Descoberta em 1980"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1655,7 +1655,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 1966"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1682,7 +1682,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 1966"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -1709,7 +1709,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 1980"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1736,7 +1736,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 1980"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1763,7 +1763,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 1980"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1790,7 +1790,7 @@ export const FIXED_MOONS: Moon[] = [
       "Órbita instável",
       "Descoberta em 2004"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1817,7 +1817,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 2004"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1844,7 +1844,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 2004"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1871,7 +1871,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 2007"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1898,7 +1898,7 @@ export const FIXED_MOONS: Moon[] = [
       "Órbita dentro dos anéis",
       "Descoberta em 2008"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1925,7 +1925,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Saturno",
       "Descoberta em 2005"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1952,7 +1952,7 @@ export const FIXED_MOONS: Moon[] = [
       "Órbita instável",
       "Descoberta em 2004"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -1979,7 +1979,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2006,7 +2006,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2033,7 +2033,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2060,7 +2060,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2007"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2087,7 +2087,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2114,7 +2114,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2000"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2141,7 +2141,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2004"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2168,7 +2168,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2006"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2195,7 +2195,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em asteroide capturado",
       "Descoberta em 2006"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2223,7 +2223,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Foi descoberta em 1948"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA18185/PIA18185~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com silicatos",
     atmosphere: "Sem atmosfera",
@@ -2250,7 +2250,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Foi descoberta em 1851"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com silicatos",
     atmosphere: "Sem atmosfera",
@@ -2277,7 +2277,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Tem uma cratera brilhante chamada Wunda"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#2F2F2F",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2304,7 +2304,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Possível atividade geológica no passado"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#C0C0C0",
     composition: "Gelo de água com núcleo rochoso",
     atmosphere: "Sem atmosfera",
@@ -2331,7 +2331,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Tem montanhas de 6 km de altura"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2358,7 +2358,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Descoberta em 1986"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2385,7 +2385,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Descoberta em 1986"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2412,7 +2412,7 @@ export const FIXED_MOONS: Moon[] = [
       "Descoberta em 1986",
       "Uma das luas internas de Urano"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2439,7 +2439,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Descoberta em 1986"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2466,7 +2466,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Descoberta em 1986"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2493,7 +2493,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Descoberta em 1986"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2520,7 +2520,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Urano",
       "Descoberta em 1986"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2548,7 +2548,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível oceano subterrâneo",
       "Será destruída por Netuno em bilhões de anos"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00348/PIA00348~orig.jpg",
     color: "#C0C0C0",
     composition: "Núcleo rochoso, manto de gelo, crosta de gelo de nitrogênio",
     atmosphere: "Exosfera tênue de nitrogênio",
@@ -2575,7 +2575,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Netuno",
       "Foi descoberta em 1989"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA00061/PIA00061~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com silicatos",
     atmosphere: "Sem atmosfera",
@@ -2602,7 +2602,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Netuno",
       "Foi descoberta em 1949"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água com material orgânico",
     atmosphere: "Sem atmosfera",
@@ -2629,7 +2629,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Netuno",
       "Foi descoberta em 1981"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2656,7 +2656,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Netuno",
       "Foi descoberta em 1989"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2683,7 +2683,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Netuno",
       "Foi descoberta em 1989"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2710,7 +2710,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Netuno",
       "Foi descoberta em 1989"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2737,7 +2737,7 @@ export const FIXED_MOONS: Moon[] = [
       "Sempre mostra a mesma face para Netuno",
       "Foi descoberta em 1989"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2764,7 +2764,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em Tritão",
       "Foi descoberta em 2002"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2791,7 +2791,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em Tritão",
       "Foi descoberta em 2003"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2818,7 +2818,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em Tritão",
       "Foi descoberta em 2002"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
@@ -2845,7 +2845,7 @@ export const FIXED_MOONS: Moon[] = [
       "Possível origem em Tritão",
       "Foi descoberta em 2002"
     ],
-    image_url: "/placeholder.jpg",
+    image_url: "https://images-assets.nasa.gov/image/PIA07784/PIA07784~orig.jpg",
     color: "#8B7355",
     composition: "Gelo de água",
     atmosphere: "Sem atmosfera",
