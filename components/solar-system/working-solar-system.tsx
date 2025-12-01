@@ -148,6 +148,22 @@ function AsteroidBelt({ innerRadius, outerRadius, count = 150, onAsteroidClick }
     return positions
   }, [innerRadius, outerRadius, count])
 
+  // Objeto genérico para representar o cinturão quando pontos não principais são clicados
+  const mainBeltRegion: Asteroid = {
+    id: "main-belt-region",
+    name: "main_belt",
+    portuguese_name: "Cinturão de Asteroides",
+    radius: 0,
+    mass: 0,
+    distance_from_sun: (innerRadius + outerRadius) / 2 * 1000000,
+    orbital_period: 0,
+    description: SOLAR_SYSTEM_REGIONS.main_belt.description,
+    curiosities: SOLAR_SYSTEM_REGIONS.main_belt.curiosities,
+    type: "asteroid",
+    location: "main_belt",
+    color: "#8B7355"
+  }
+
   return (
     <group>
       {asteroids.map((asteroid, index) => (
@@ -156,10 +172,19 @@ function AsteroidBelt({ innerRadius, outerRadius, count = 150, onAsteroidClick }
           position={[asteroid.x, asteroid.y, asteroid.z]} 
           scale={asteroid.scale}
           onClick={(e) => {
+            e.stopPropagation()
             if (asteroid.isMain && asteroid.asteroid && onAsteroidClick) {
-              e.stopPropagation()
               onAsteroidClick(asteroid.asteroid)
+            } else if (onAsteroidClick) {
+              // Se não for um asteroide principal, mostra informações sobre o cinturão
+              onAsteroidClick(mainBeltRegion)
             }
+          }}
+          onPointerOver={() => {
+            document.body.style.cursor = "pointer"
+          }}
+          onPointerOut={() => {
+            document.body.style.cursor = "auto"
           }}
         >
           <sphereGeometry args={[1, 8, 8]} />
@@ -177,8 +202,28 @@ function OortCloud({ radius = 180, count = 200, onCometClick }: {
 }) {
   const objects = useMemo(() => {
     const positions = []
+    const mainComets = OORT_CLOUD_OBJECTS.slice(0, 3)
     
-    for (let i = 0; i < count; i++) {
+    // Adicionar cometas principais
+    mainComets.forEach((comet, index) => {
+      const phi = (index / mainComets.length) * Math.PI * 2
+      const theta = Math.PI / 3 + (Math.random() - 0.5) * 0.5
+      const r = radius + (Math.random() - 0.5) * 20
+      
+      const x = r * Math.sin(theta) * Math.cos(phi)
+      const y = r * Math.cos(theta)
+      const z = r * Math.sin(theta) * Math.sin(phi)
+      
+      positions.push({ 
+        x, y, z, 
+        scale: 0.5 + Math.random() * 0.3,
+        isMain: true,
+        comet
+      })
+    })
+    
+    // Adicionar pontos genéricos
+    for (let i = 0; i < count - mainComets.length; i++) {
       const phi = Math.random() * Math.PI * 2
       const theta = Math.random() * Math.PI
       const r = radius + (Math.random() - 0.5) * 40
@@ -187,16 +232,56 @@ function OortCloud({ radius = 180, count = 200, onCometClick }: {
       const y = r * Math.cos(theta)
       const z = r * Math.sin(theta) * Math.sin(phi)
       
-      positions.push({ x, y, z, scale: 0.3 + Math.random() * 0.5 })
+      positions.push({ 
+        x, y, z, 
+        scale: 0.3 + Math.random() * 0.5,
+        isMain: false,
+        comet: null
+      })
     }
     return positions
   }, [radius, count])
+
+  // Objeto genérico para representar a nuvem quando pontos não principais são clicados
+  const oortCloudRegion: Asteroid = {
+    id: "oort-cloud-region",
+    name: "oort_cloud",
+    portuguese_name: "Nuvem de Oort",
+    radius: 0,
+    mass: 0,
+    distance_from_sun: radius * 1000000,
+    orbital_period: 0,
+    description: SOLAR_SYSTEM_REGIONS.oort_cloud.description,
+    curiosities: SOLAR_SYSTEM_REGIONS.oort_cloud.curiosities,
+    type: "comet",
+    location: "oort_cloud",
+    color: "#87CEEB"
+  }
 
   return (
     <>
       <group>
         {objects.map((obj, index) => (
-          <mesh key={index} position={[obj.x, obj.y, obj.z]} scale={obj.scale}>
+          <mesh 
+            key={index} 
+            position={[obj.x, obj.y, obj.z]} 
+            scale={obj.scale}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (obj.isMain && obj.comet && onCometClick) {
+                onCometClick(obj.comet)
+              } else if (onCometClick) {
+                // Se não for um cometa principal, mostra informações sobre a nuvem
+                onCometClick(oortCloudRegion)
+              }
+            }}
+            onPointerOver={() => {
+              document.body.style.cursor = "pointer"
+            }}
+            onPointerOut={() => {
+              document.body.style.cursor = "auto"
+            }}
+          >
             <sphereGeometry args={[1, 8, 8]} />
             <meshStandardMaterial 
               color="#87CEEB" 
@@ -252,6 +337,22 @@ function KuiperBelt({ radius, count = 100, onObjectClick }: {
     return positions
   }, [radius, count])
 
+  // Objeto genérico para representar o cinturão quando pontos não principais são clicados
+  const kuiperBeltRegion: Asteroid = {
+    id: "kuiper-belt-region",
+    name: "kuiper_belt",
+    portuguese_name: "Cinturão de Kuiper",
+    radius: 0,
+    mass: 0,
+    distance_from_sun: radius * 1000000,
+    orbital_period: 0,
+    description: SOLAR_SYSTEM_REGIONS.kuiper_belt.description,
+    curiosities: SOLAR_SYSTEM_REGIONS.kuiper_belt.curiosities,
+    type: "asteroid",
+    location: "kuiper_belt",
+    color: "#20B2AA"
+  }
+
   return (
     <group>
       {objects.map((obj, index) => (
@@ -260,14 +361,23 @@ function KuiperBelt({ radius, count = 100, onObjectClick }: {
           position={[obj.x, obj.y, obj.z]} 
           scale={obj.scale}
           onClick={(e) => {
+            e.stopPropagation()
             if (obj.isMain && obj.object && onObjectClick) {
-              e.stopPropagation()
               onObjectClick(obj.object)
+            } else if (onObjectClick) {
+              // Se não for um objeto principal, mostra informações sobre o cinturão
+              onObjectClick(kuiperBeltRegion)
             }
+          }}
+          onPointerOver={() => {
+            document.body.style.cursor = "pointer"
+          }}
+          onPointerOut={() => {
+            document.body.style.cursor = "auto"
           }}
         >
           <sphereGeometry args={[1, 8, 8]} />
-          <meshStandardMaterial color="#4682B4" roughness={0.8} />
+          <meshStandardMaterial color="#20B2AA" roughness={0.8} />
         </mesh>
       ))}
     </group>
@@ -370,14 +480,44 @@ function CameraController({ onOortView }: { onOortView?: () => void }) {
   }, [camera])
   
   useEffect(() => {
+    // Função genérica para focar em qualquer objeto
+    const focusOnObject = (radius: number, height: number = 30) => {
+      // Posiciona a câmera em um ponto que permite ver o objeto claramente
+      const angle = Math.PI / 4 // 45 graus
+      const distance = radius * 1.5 + 20 // Distância suficiente para ver o objeto
+      camera.position.set(
+        Math.cos(angle) * distance,
+        height,
+        Math.sin(angle) * distance
+      )
+      // Olha para o centro do objeto (na posição orbital)
+      camera.lookAt(Math.cos(angle) * radius, 0, Math.sin(angle) * radius)
+      camera.updateProjectionMatrix()
+    }
+
+    // Expor funções para focar em diferentes objetos
+    ;(window as any).focusOnAsteroidBelt = () => {
+      focusOnObject(39.5, 25) // Raio médio do cinturão
+    }
+    
+    ;(window as any).focusOnPluto = () => {
+      focusOnObject(100, 30) // Posição de Plutão
+    }
+    
+    ;(window as any).focusOnKuiperBelt = () => {
+      focusOnObject(95, 35) // Posição do Cinturão de Kuiper
+    }
+    
+    ;(window as any).focusOnOortCloud = () => {
+      focusOnObject(160, 50) // Posição da Nuvem de Oort
+    }
+    
     if (onOortView) {
       const handleOortView = () => {
-        camera.position.set(0, 100, 250)
-        camera.lookAt(0, 0, 0)
+        focusOnObject(160, 50)
       }
-      
-      // Expor função globalmente para o botão
-      (window as any).viewOortCloud = handleOortView
+      // Expor função globalmente para o botão (compatibilidade)
+      ;(window as any).viewOortCloud = handleOortView
     }
   }, [camera, onOortView])
   
@@ -653,18 +793,6 @@ function SimulationControls() {
             className="w-full"
           />
         </div>
-        
-        <Button 
-          onClick={() => {
-            if ((window as any).viewOortCloud) {
-              (window as any).viewOortCloud()
-            }
-          }}
-          className="w-full"
-          variant="outline"
-        >
-          Ver Nuvem de Oort
-        </Button>
       </CardContent>
     </Card>
   )
@@ -697,7 +825,7 @@ function PlanetModal({ planet, onClose }: { planet: Planet | Moon | Asteroid; on
             <div className="space-y-4">
               <div className="w-full h-64 rounded-lg overflow-hidden bg-slate-900">
                 <img 
-                  src={planet.image_url || "/placeholder.jpg"} 
+                  src={('image_url' in planet ? planet.image_url : null) || "/placeholder.jpg"} 
                   alt={planet.portuguese_name}
                   className="w-full h-full object-cover"
                   onError={(e) => {
